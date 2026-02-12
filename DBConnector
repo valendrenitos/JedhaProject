@@ -1,0 +1,44 @@
+import mysql.connector
+import boto3
+from dotenv import load_dotenv
+import os
+load_dotenv()
+password = os.environ["MYSQL_DB_PSWD"]
+username=os.environ["MYSQL_DB_USER"]
+queryLicenses=os.environ["QUERY_LICENSES"]
+queryMedias=os.environ["QUERY_MEDIAS"]
+conn = None
+
+def CloseCon(conn):
+    conn.close()
+
+def TryConnect(password,username):
+    try:
+        conn = mysql.connector.connect(
+            host='database-jedha.cl200gecsebu.eu-north-1.rds.amazonaws.com',
+            port=3306,
+            database='mysql',
+            user=username,
+            password=password,
+            ssl_disabled=False,
+        ssl_ca='/certs/global-bundle.pem'
+        )
+        cur = conn.cursor()
+        cur.execute('SELECT VERSION();')
+        print(cur.fetchone()[0])
+        cur.close()
+        return conn
+    except Exception as e:
+        print(f"Database error: {e}")
+        raise
+   
+
+
+
+def getData():
+    conn=TryConnect(password, username)
+    if conn:
+        data1=conn._execute_query(queryLicenses)
+        data2=conn._execute_query(queryMedias)
+        CloseCon(conn)
+        return data1,data2
