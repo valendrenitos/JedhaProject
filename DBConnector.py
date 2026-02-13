@@ -3,8 +3,7 @@ import boto3
 from dotenv import load_dotenv
 import os
 load_dotenv()
-password = os.environ["MYSQL_DB_PSWD"]
-username=os.environ["MYSQL_DB_USER"]
+
 queryLicenses=os.environ["QUERY_LICENSES"]
 queryMedias=os.environ["QUERY_MEDIAS"]
 conn = None
@@ -12,14 +11,14 @@ conn = None
 def CloseCon(conn):
     conn.close()
 
-def TryConnect(password,username):
+def TryConnect():
     try:
         conn = mysql.connector.connect(
-            host='database-jedha.cl200gecsebu.eu-north-1.rds.amazonaws.com',
+            host=os.environ["DB_ADDRESS"],
             port=3306,
             database='mysql',
-            user=username,
-            password=password,
+            user=os.environ["MYSQL_DB_USER"],
+            password=os.environ["MYSQL_DB_PSWD"],
             ssl_disabled=False,
         ssl_ca='/certs/global-bundle.pem'
         )
@@ -36,9 +35,13 @@ def TryConnect(password,username):
 
 
 def getData():
-    conn=TryConnect(password, username)
+    conn=TryConnect()
     if conn:
         data1=conn._execute_query(queryLicenses)
         data2=conn._execute_query(queryMedias)
         CloseCon(conn)
         return data1,data2
+
+
+conn=TryConnect()
+CloseCon(conn)
