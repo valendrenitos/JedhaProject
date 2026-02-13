@@ -39,5 +39,5 @@ fig.update_layout(bargap=0.2)
 
 
 st.plotly_chart(fig, use_container_width=True)
-data_load_state = st.text('Loading data...')
+
 

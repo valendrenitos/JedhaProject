@@ -11,10 +11,6 @@ font="sans serif"
 [browser
 ]
 
-
 serverAddress = "localhost"
-
 gatherUsageStats = true
-
-
 serverPort = 8501
