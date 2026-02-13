@@ -50,3 +50,23 @@ fig=px.histogram(event_coverage,
                  color="sport")
 
 st.plotly_chart(fig, use_container_width='stretch')
+
+
+
+#EDA Total lics par fédé
+
+st.subheader("Licenciés par fédération")
+
+    with st.form("total_lics_par_fed"):
+        fed = st.selectbox("Select a fed you want to see lics", data["nom_fed"].sort_values().unique())
+        year = st.selectbox("Select a year you want to see your metric", data["annee"].sort_values().unique())
+
+        submit = st.form_submit_button("submit")
+
+        if submit:
+            # When the form is submitted, process user input and display results dynamically
+            
+            mask = data[(data["nom_fed"] == fed)& (data["annee"] == year)]
+            total_lic_fed = mask["total_lic"].sum()
+
+            st.metric("Total lic per fed", total_lic_fed)
