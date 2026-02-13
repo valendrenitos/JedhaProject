@@ -44,4 +44,6 @@ def getData():
 
 
 conn=TryConnect()
+print(conn._execute_query("SELECT * FROM media_table.media_data"))
 CloseCon(conn)
+
