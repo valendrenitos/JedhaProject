@@ -21,14 +21,26 @@ datamedia=datamedia.rename(columns={"évènement": "sport_event", "année": "yea
 print(datalicenses.info())
 datamedia = datamedia.replace({float('nan'): None})
 datalicenses=datalicenses.drop(["code_commune","nom_commune","num_departement"],axis=1)
-datalicenses = datalicenses.replace({"'": ""}, regex=True)
+print(datalicenses.head(20))
 
-print(datalicenses.groupby(["annee","region","nom_fed"]).agg(
+
+datalicenses["total_lic"] = datalicenses["total_lic"].replace({".": ""}, regex=True)
+datalicenses["total_f"] = datalicenses["total_f"].replace({".": ""}, regex=True)
+datalicenses["total_h"] = datalicenses["total_h"].replace({".": ""}, regex=True)
+datalicenses["total_lic"]=pd.to_numeric(datalicenses['total_lic'])
+datalicenses["total_f"]=pd.to_numeric(datalicenses['total_f'])
+datalicenses["total_h"]=pd.to_numeric(datalicenses['total_h'])
+datalicenses = datalicenses.replace({"'": ""}, regex=True)
+datalicenses = datalicenses.replace({'"': ""}, regex=True)
+datalicenses = datalicenses.replace({'-': " "}, regex=True)
+datalicenses = datalicenses.replace({',': ""}, regex=True)
+result=datalicenses.groupby(["annee","region","nom_fed"], as_index=False).agg(
 total_license=('total_lic','sum'),
-total_f=('total_f',sum()),
+total_f=('total_f','sum'),
 total_h=('total_h','sum')
-))
-conn=dbc.TryConnect()
+)
+result.to_csv("licenses_by_year_region_fed.csv", index=False)
+#conn=dbc.TryConnect()
 
 #for i,row in datamedia.iterrows():
     #quer="INSERT INTO media_table.media_data (sport_event,sport,year,avrg_tv_aud,avrg_tv_match,total_match,hours_live,numb_of_post) " \
@@ -48,4 +60,4 @@ conn=dbc.TryConnect()
 #     conn.commit()
   
 
-dbc.CloseCon(conn)
+#dbc.CloseCon(conn)
