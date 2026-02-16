@@ -7,6 +7,7 @@ load_dotenv()
 
 queryLicenses=os.environ["QUERY_LICENSES"]
 queryMedias=os.environ["QUERY_MEDIAS"]
+queryClubs=os.eviron["QUERY_CLUBS"]
 conn = None
 
 def CloseCon(conn):
@@ -50,8 +51,13 @@ def getData():
         data2 = pd.DataFrame(rows, columns=columns)
         cur.close()
 
+        cur.execute(queryClubs)
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+        data3 = pd.DataFrame(rows, columns=columns)
+        cur.close()
         CloseCon(conn)
-        return data1,data2
+        return data1,data2,data3
 
 
 data1,data2=getData()
