@@ -54,7 +54,7 @@ else:
 #                  name= "Average TV coverage for selected events" if len(sport_events)>0 else "Average TV coverage for all events",
 #                  color="sport")
 # fig.update_layout(bargap=0.2)
-data3read=data3[data3["annee"]>2000]
+data3read=data3[data3["annee"]>2010]
 
 fig = go.Figure()
 
