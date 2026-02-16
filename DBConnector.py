@@ -2,6 +2,7 @@ import mysql.connector
 import boto3
 from dotenv import load_dotenv
 import os
+import pandas as pd
 load_dotenv()
 
 queryLicenses=os.environ["QUERY_LICENSES"]
@@ -20,7 +21,7 @@ def TryConnect():
             user=os.environ["MYSQL_DB_USER"],
             password=os.environ["MYSQL_DB_PSWD"],
             ssl_disabled=False,
-        ssl_ca='/certs/global-bundle.pem'
+        ssl_ca='/certs/global-bundle.pem',buffered=True
         )
         cur = conn.cursor()
         cur.execute('SELECT VERSION();')
@@ -37,13 +38,22 @@ def TryConnect():
 def getData():
     conn=TryConnect()
     if conn:
-        data1=conn._execute_query(queryLicenses)
-        data2=conn._execute_query(queryMedias)
+        cur = conn.cursor(buffered=True)
+        cur.execute(queryLicenses)
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+        data1 = pd.DataFrame(rows, columns=columns)
+   
+        cur.execute(queryMedias)
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+        data2 = pd.DataFrame(rows, columns=columns)
+        cur.close()
+
         CloseCon(conn)
         return data1,data2
 
 
-conn=TryConnect()
-print(conn._execute_query("SELECT * FROM media_table.media_data"))
-CloseCon(conn)
-
+data1,data2=getData()
+print(data1.head())
+data2.info()
