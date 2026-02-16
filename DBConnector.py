@@ -49,7 +49,7 @@ def getData():
         rows = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
         data2 = pd.DataFrame(rows, columns=columns)
-        cur.close()
+       
 
         cur.execute(queryClubs)
         rows = cur.fetchall()
@@ -60,6 +60,4 @@ def getData():
         return data1,data2,data3
 
 
-data1,data2=getData()
-print(data1.head())
-data2.info()
+
