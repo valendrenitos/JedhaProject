@@ -31,6 +31,15 @@ def clean_columns(df):
     )
     return df
 
+def clean_numeric_columns_2014(df):
+    '''Transforme les colonnes numérique en int, pour éviter les bug d'analyse '''
+    cols = df.columns[3:65]
+
+    for col in cols:
+        df[col] = pd.to_numeric(df[col], errors="coerce").astype("Int64")
+    
+    return df
+
 # BOTH 
 def add_year(df, year: int):
     df["annee"] = year
@@ -238,6 +247,8 @@ def transform_lic_file(year: int):
     else:
         df = pd.read_csv(file_path, sep=";", encoding="latin1", low_memory=False)
 
+    if year == 2014:
+        df = clean_numeric_columns_2014(df)
     df = clean_columns(df)
     df = add_year(df, year)
 
