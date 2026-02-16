@@ -7,7 +7,7 @@ load_dotenv()
 
 queryLicenses=os.environ["QUERY_LICENSES"]
 queryMedias=os.environ["QUERY_MEDIAS"]
-queryClubs=os.eviron["QUERY_CLUBS"]
+queryClubs=os.environ["QUERY_CLUBS"]
 conn = None
 
 def CloseCon(conn):
