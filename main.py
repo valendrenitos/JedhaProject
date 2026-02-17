@@ -59,17 +59,20 @@ if len(fede_filter)>0:
     license_filters= data1[data1["nom_fed"].isin(fede_filter)]
 else:
     license_filters=data1
+    
 fig_media_lic=stg.graph_comparaison_media_lic(license_filters,event_coverage,data3,sport_events)
-# fig = px.line(x=datatreated1["year"], y=datatreated1["total_license"], color=px.Constant("This year"),
-#              labels=dict(x="année", y="licenses", color="Time Period"))
-# fig.add_bar(event_coverage, 
-#                  x = "annee", 
-#                  y="avrg_tv_aud",
-#                  name= "Average TV coverage for selected events" if len(sport_events)>0 else "Average TV coverage for all events",
-#                  color="sport")
-# fig.update_layout(bargap=0.2)
+# APPELER LA FONCTION PERMETTANT LA GEN DU GRAPH EN DESSOUS ####
+# NOM_VARIABLE_FILTRE= st.multiselect("CHOISIR LE TITRE DU FILTRE", 
+#                               DATA_A_FILTRER["FILTRE"].sort_values().unique(), 
+#                               placeholder=None,
+#                               label_visibility="visible", 
+#                               accept_new_options=False, 
+#                               width="stretch")
+
+# RAJOUTER LA FONCTION SOUS LA FORME 
+# NOM_GRAPH = stg.NOM_DE_LA_FONCTION(VOS_VARIABLES)
 
 st.plotly_chart(fig_media_lic, use_container_width='stretch')
-
+# AJOUTER st.plotly_chart( VOTRE_GRAPH, use_container_width='stretch') en dessous
 
 
