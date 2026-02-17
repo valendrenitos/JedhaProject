@@ -1,8 +1,19 @@
 import streamlit as st
 import pandas as pd
+import numpy as np
 import json
+
 import plotly.express as px
 import altair as alt
+
+from sklearn.linear_model import LinearRegression, Ridge
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import mean_squared_error, r2_score
+
+
 
 st.set_page_config(page_title="Licenciés sportifs par région", layout="wide")
 
@@ -259,7 +270,137 @@ df_final = df_compare[[
     "evolution_femmes_%": "% Evolution femmes actives N-1"
 })
 
-
-
 st.subheader(f"Évolution du ratio licenciés / habitant - {annee_sel}")
 st.dataframe(df_final)
+
+
+# -------------------------------------------------------------------------
+# ---------------------------- MACHINE LEARNING ---------------------------
+# -------------------------------------------------------------------------
+
+licenses["annee"] = licenses["annee"].astype(int)
+
+# ------------------------------
+# 2️⃣ Définir les features et target
+# ------------------------------
+features = [
+    "annee",
+    "region",
+    "nom_fed",
+    "total_license",
+    "f_1_9", "f_10_19", "f_20_29", "f_30_59", "f_60_74", "f_75"
+]
+X = licenses[features]
+y = licenses["total_f"]
+
+categorical_cols = ["region", "nom_fed"]
+numeric_cols = [col for col in features if col not in categorical_cols]
+
+# Préprocessing
+preprocessor = ColumnTransformer(
+    transformers=[
+        ("cat", OneHotEncoder(handle_unknown="ignore"), categorical_cols),
+        ("num", "passthrough", numeric_cols)
+    ]
+)
+
+# Pipeline Ridge
+ridge_pipeline = Pipeline(steps=[
+    ("preprocessor", preprocessor),
+    ("model", Ridge(alpha=1.0))
+])
+
+# ------------------------------
+# 3️⃣ Entraînement
+# ------------------------------
+ridge_pipeline.fit(X, y)
+
+# ------------------------------
+# 4️⃣ Streamlit UI : projections somme de toutes les fédérations
+# ------------------------------
+
+st.title("Projection des licences sportives féminines par région (Ridge Regression)")
+st.markdown("Les projections sont calculées pour la somme de toutes les fédérations sélectionnées.")
+
+regions = licenses["region"].unique()
+selected_region = st.selectbox("Choisir une région :", regions)
+
+# 1️⃣ Agrégation historique par région
+df_hist = licenses[licenses["region"] == selected_region].copy()
+
+if fed_sel:
+    df_hist = df_hist[df_hist["nom_fed"].isin(fed_sel)]
+
+df_hist_grouped = df_hist.groupby("annee")["total_f"].sum().reset_index()
+
+# 2️⃣ Modèle Ridge simple sur l'année
+X_train = df_hist_grouped[["annee"]]
+y_train = df_hist_grouped["total_f"]
+
+model_ridge_year = Ridge(alpha=1.0)
+model_ridge_year.fit(X_train, y_train)
+
+# 3️⃣ Projection 2024-2030
+future_years = pd.DataFrame({"annee": np.arange(2024, 2031)})
+future_pred = model_ridge_year.predict(future_years)
+future_years["total_f"] = future_pred
+future_years["type"] = "Projection"
+
+# 4️⃣ Fusionner avec historique
+df_plot = pd.concat([df_hist_grouped.assign(type="Historique"), future_years], ignore_index=True)
+
+# ------------------------------
+# 5️⃣ Visualisation interactive
+# ------------------------------
+fig = px.line(
+    df_plot,
+    x="annee",
+    y="total_f",
+    color="type",
+    markers=True,
+    title=f"Licences féminines - {selected_region} (Ridge Regression)"
+)
+
+fig.update_layout(
+    xaxis_title="Année",
+    yaxis_title="Nombre de licences féminines",
+    template="plotly_white",
+    yaxis=dict(tickformat=".2s")  # affiche 1k, 1M automatiquement
+)
+
+st.plotly_chart(fig, use_container_width=True)
+
+
+
+# ------------------------------
+# 2️⃣ Pipeline Ridge
+# ------------------------------
+
+ridge_pipeline = Pipeline(steps=[
+    ("preprocessor", preprocessor),
+    ("model", Ridge(alpha=1.0))  # alpha = force de régularisation
+])
+
+# Split temporel simple : années <=2021 pour train, >2021 pour test
+X_train = X[licenses["annee"] <= 2021]
+X_test  = X[licenses["annee"] > 2021]
+y_train = y[licenses["annee"] <= 2021]
+y_test  = y[licenses["annee"] > 2021]
+
+# Entraînement
+ridge_pipeline.fit(X_train, y_train)
+
+# ------------------------------
+# 3️⃣ Évaluation
+# ------------------------------
+
+y_pred = ridge_pipeline.predict(X_test)
+
+rmse = np.sqrt(mean_squared_error(y_test, y_pred))
+r2 = r2_score(y_test, y_pred)
+
+st.metric(label="RMSE du modèle :",
+          value=round(rmse))
+
+st.metric(label="R2 score:",
+          value=(round(r2,4)))
