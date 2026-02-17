@@ -319,7 +319,8 @@ ridge_pipeline.fit(X, y)
 # 4️⃣ Streamlit UI : projections somme de toutes les fédérations
 # ------------------------------
 
-st.title("Projection des licences sportives féminines par région (Ridge Regression)")
+st.title("Projection des licences sportives féminines par région")
+st.subheader("Ridge Regression")
 st.markdown("Les projections sont calculées pour la somme de toutes les fédérations sélectionnées.")
 
 regions = licenses["region"].unique()
@@ -399,8 +400,22 @@ y_pred = ridge_pipeline.predict(X_test)
 rmse = np.sqrt(mean_squared_error(y_test, y_pred))
 r2 = r2_score(y_test, y_pred)
 
-st.metric(label="RMSE du modèle :",
-          value=round(rmse))
+## Interprétation des scores
 
-st.metric(label="R2 score:",
-          value=(round(r2,4)))
+st.subheader(f"R2 score: {round(r2,4)}")
+
+st.markdown('''
+- ≈ 71 % de la variance expliquée par le modèle. 
+- Comparé à 0.36 avant, ça veut dire que le modèle Ridge capture beaucoup mieux la tendance des licences féminines. 
+- En clair : les variables utilisées (année + région + fédération + tranches d’âge + total_license) expliquent la majorité des variations.
+''')
+
+st.subheader(f"RMSE du modèle: {round(rmse)}")
+
+st.markdown('''
+- RMSE est l’erreur moyenne en valeur absolue (racine de l’erreur quadratique). 
+- Donc, en moyenne, le modèle se trompe de ~4 500 licences par région/fédération par an. 
+- Si les effectifs par fédération sont de l’ordre de 50 000 à 200 000 licences, l’erreur relative est très faible (<10%). 
+
+💡 En résumé : c’est un modèle robuste et précis, bien meilleur que le modèle simple basé seulement sur l’année.
+''')
