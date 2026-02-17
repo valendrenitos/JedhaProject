@@ -1,3 +1,8 @@
+#fichiers ML
+*.csv
+Machine_learning/lic_clean_2019_2023.csv
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
