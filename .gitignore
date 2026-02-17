@@ -7,7 +7,7 @@ Machine_learning/lic_clean_2019_2023.csv
 __pycache__/
 *.py[codz]
 *$py.class
-
+*.csv
 # C extensions
 *.so
 
