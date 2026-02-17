@@ -35,19 +35,31 @@ st.markdown("""
     Mettre la problématique ici
 """)
 
-sport_events= st.multiselect("Select sportive events", 
+sport_events= st.multiselect("Choisir un évenement", 
                              data2["year"].sort_values().unique(), 
                              placeholder=None,
                              label_visibility="visible", 
                              accept_new_options=False, 
                              width="stretch")
 
+fede_filter= st.multiselect("Choisir une/des fédération/s", 
+                             data1["nom_fed"].sort_values().unique(), 
+                             placeholder=None,
+                             label_visibility="visible", 
+                             accept_new_options=False, 
+                             width="stretch")
+
+
 if len(sport_events)>0:
     event_coverage= data2[data2["sport_event"].isin(sport_events)]
 else:
     event_coverage=data2
 
-fig_media_lic=stg.graph_comparaison_media_lic(data1,data2,data3,sport_events)
+if len(fede_filter)>0:
+    license_filters= data1[data1["nom_fed"].isin(fede_filter)]
+else:
+    license_filters=data1
+fig_media_lic=stg.graph_comparaison_media_lic(license_filters,event_coverage,data3,sport_events)
 # fig = px.line(x=datatreated1["year"], y=datatreated1["total_license"], color=px.Constant("This year"),
 #              labels=dict(x="année", y="licenses", color="Time Period"))
 # fig.add_bar(event_coverage, 
