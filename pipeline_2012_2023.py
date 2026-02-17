@@ -15,8 +15,15 @@ AGE_GROUPS_NEW = {
     "75": ["75 à 79 ans", "80 ans et plus"],
 }
 
-# BOTH
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# FULL PERIOD
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
 def clean_columns(df):
+    '''Premier cleaning des colonnes sur l'ensemble des années'''
+    
     df.columns = [col.lstrip("\ufeff") for col in df.columns]  # enlève BOM si présent (fichier 2012)
     df = df.rename(columns=lambda x: re.sub(r"_\d{4}$", "", str(x)))
     
@@ -33,6 +40,7 @@ def clean_columns(df):
 
 def clean_numeric_columns_2014(df):
     '''Transforme les colonnes numérique en int, pour éviter les bug d'analyse '''
+    
     cols = df.columns[3:65]
 
     for col in cols:
@@ -40,21 +48,66 @@ def clean_numeric_columns_2014(df):
     
     return df
 
-# BOTH 
 def add_year(df, year: int):
+    ''' Ajout de l'année en colonne pour chacune des années'''
+    
     df["annee"] = year
     return df
 
-# OLD
+def clean_federation_name(text):
+    ''' Mise en forme de la colonne "nom_fed" et suppression des termes FEDERATION FRANCAISE, pour n'avoir que les noms des sports'''
+    
+    if pd.isna(text):
+        return text
+    
+    # 1.mettre en majuscules
+    text = text.upper()
+    
+    # 2. enlever accents
+    text = ''.join(
+        c for c in unicodedata.normalize('NFD', text)
+        if unicodedata.category(c) != 'Mn'
+    )
+    
+    # 3. supprimer FF, DE, D'
+    text = re.sub(r"\bFF\b", "", text)
+    text = re.sub(r"\bDE\b", "", text)
+    text = re.sub(r"\bD['’]", "", text)  # gère ' et ’
+    text = re.sub(r"\bDES\b", "", text)
+    text = re.sub(r"\bDU\b", "", text)
+    text = re.sub(r"\bF\b", "", text)
+    text = re.sub(r"\bFEDERATION FRANCAISE\b", "", text)
+
+    
+    # 4. enlever espaces multiples
+    text = re.sub(r"\s+", " ", text).strip()
+    
+    return text
+
+def clean_federation(df):
+    ''' Mise en application de la fonction clean_federation_name'''
+
+    if "nom_fed" in df.columns:
+        df["nom_fed"] = df["nom_fed"].apply(clean_federation_name)
+    return df
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# 2012 -> 2018
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
 def import_dept_num(df):
+    '''Import du numéro de département en fusionnant une base externe '''
+
     communes_dept = pd.read_csv("data/recap_communes_par_departement.csv")
     communes_dept = communes_dept.rename(columns={"Département":"num_departement","Code Commune":"code_commune"})
     df = df.merge(communes_dept,how="inner",on="code_commune")
 
     return df
 
-# OLD
 def rename_columns_2012_2018(df):
+    ''' Normalisation du nom des colonnes'''
 
     synonyms = {
         "nom_commune": ["libelle", "libgeo"],
@@ -77,69 +130,9 @@ def rename_columns_2012_2018(df):
 
     return df
 
-# NEW
-def rename_columns_2019_2023(df):
-    rename_map = {"code commune":"code_commune",
-                  "commune":"nom_commune",
-                  "departement":"num_departement",
-                  "code":"code_fed",
-                  "federation":"nom_fed",
-                  "total":"total_lic"}
-    return df.rename(columns=rename_map)
-
-# BOTH
-def clean_federation_name(text):
-    if pd.isna(text):
-        return text
-    
-    # 1️⃣ mettre en majuscules
-    text = text.upper()
-    
-    # 2️⃣ enlever accents
-    text = ''.join(
-        c for c in unicodedata.normalize('NFD', text)
-        if unicodedata.category(c) != 'Mn'
-    )
-    
-    # 3️⃣ supprimer FF, DE, D'
-    text = re.sub(r"\bFF\b", "", text)
-    text = re.sub(r"\bDE\b", "", text)
-    text = re.sub(r"\bD['’]", "", text)  # gère ' et ’
-    text = re.sub(r"\bDES\b", "", text)
-    text = re.sub(r"\bDU\b", "", text)
-    text = re.sub(r"\bF\b", "", text)
-    text = re.sub(r"\bFEDERATION FRANCAISE\b", "", text)
-
-    
-    # 4️⃣ enlever espaces multiples
-    text = re.sub(r"\s+", " ", text).strip()
-    
-    return text
-
-# BOTH
-def clean_federation(df):
-    if "nom_fed" in df.columns:
-        df["nom_fed"] = df["nom_fed"].apply(clean_federation_name)
-    return df
-
-# NEW
-def format_departement(df):
-    df["num_departement"] = df["num_departement"].astype(str).str.zfill(2)
-    return df
-
-# NEW
-def compute_totals_2019_2023(df):
-    f_cols = [col for col in df.columns if col.startswith("f_")]
-    h_cols = [col for col in df.columns if col.startswith("h_")]
-
-    df["total_f"] = df[f_cols].apply(pd.to_numeric, errors="coerce").sum(axis=1)
-    df["total_h"] = df[h_cols].apply(pd.to_numeric, errors="coerce").sum(axis=1)
-    df["total_lic"] = df["total_f"] + df["total_h"]
-
-    return df
-
-# OLD
 def compute_age_categories_2012_2018(df):
+    ''' Calcul des nouvelles catégories d'âges'''
+
     age_mapping = {
         "1_9": ["0_4", "5_9"],
         "10_19": ["10_14", "15_19"],
@@ -159,8 +152,64 @@ def compute_age_categories_2012_2018(df):
                 df[f"{sex}_{new_cat}"] = 0  # si aucune colonne, mettre 0
     return df
 
-# NEW
+def import_region(df):
+    ''' Import d'une base externe pour connaitre les codes et noms des régions'''
+
+    # import file departements-france to get code-region
+    dept = pd.read_csv("data/departements-france.csv")
+
+    # transfo columns types and name
+    dept = dept.rename(columns=({"code_departement":"num_departement"}))
+    dept["num_departement"] = dept["num_departement"].astype(str)
+    df["num_departement"] = df["num_departement"].astype(str)
+
+    # Merge 2 datasets
+    df = df.merge(dept,on="num_departement",how="left")
+
+    # Cleaning
+    df = df.drop(columns=["region","nom_departement","code_region"],errors="ignore")
+    df = df.rename(columns={"nom_region": "region"})
+
+    return df
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# 2019 -> 2023
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
+
+def rename_columns_2019_2023(df):
+    ''' Normalisation noms des colonnes'''
+
+    rename_map = {"code commune":"code_commune",
+                  "commune":"nom_commune",
+                  "departement":"num_departement",
+                  "code":"code_fed",
+                  "federation":"nom_fed",
+                  "total":"total_lic"}
+    return df.rename(columns=rename_map)
+
+def format_departement(df):
+    ''' Mettre les colonnes de numéros de département en texte'''
+
+    df["num_departement"] = df["num_departement"].astype(str).str.zfill(2)
+    return df
+
+def compute_totals_2019_2023(df):
+    ''' calcul des totaux de licences par sexe'''
+
+    f_cols = [col for col in df.columns if col.startswith("f_")]
+    h_cols = [col for col in df.columns if col.startswith("h_")]
+
+    df["total_f"] = df[f_cols].apply(pd.to_numeric, errors="coerce").sum(axis=1)
+    df["total_h"] = df[h_cols].apply(pd.to_numeric, errors="coerce").sum(axis=1)
+    df["total_lic"] = df["total_f"] + df["total_h"]
+
+    return df
+
 def compute_age_categories_2019_2023(df):
+    ''' calcul des licenciés par catégorie d'âge'''
+
     for prefix in ["f", "h"]:
         for group, ages in AGE_GROUPS_NEW.items():
 
@@ -182,28 +231,15 @@ def compute_age_categories_2019_2023(df):
 
     return df
 
-# OLD
-def import_region(df):
-    # import file departements-france to get code-region
-    dept = pd.read_csv("data/departements-france.csv")
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# PIPELINE OF ACTIONS
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
-    # transfo columns types and name
-    dept = dept.rename(columns=({"code_departement":"num_departement"}))
-    dept["num_departement"] = dept["num_departement"].astype(str)
-    df["num_departement"] = df["num_departement"].astype(str)
-
-    # Merge 2 datasets
-    df = df.merge(dept,on="num_departement",how="left")
-
-    # Cleaning
-    df = df.drop(columns=["region","nom_departement","code_region"],errors="ignore")
-    df = df.rename(columns={"nom_region": "region"})
-
-    return df
-
-
-# BOTH
 def reorder_columns(df):
+    ''' Ordonnancement des colonnes pour le dataset final'''
+
     ordered_cols = [
         "annee",
         "code_commune",
@@ -236,6 +272,8 @@ def reorder_columns(df):
     return df[cols_to_use]
 
 def transform_lic_file(year: int):
+    ''' Pipeline final des différentes fonctions'''
+    
     print(f"Processing year {year}...")
 
     # Les années antérieures à 2015 ont des encodages différents :
