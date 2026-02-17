@@ -4,7 +4,7 @@ import pandas as pd
 def sidebar_filters(df: pd.DataFrame) -> dict:
     st.sidebar.header("Filtres")
 
-    years = sorted(df["annee"].unique())
+    years = sorted(df["year"].unique())
     year_min, year_max = st.sidebar.select_slider(
         "Période",
         options=years,
@@ -20,7 +20,7 @@ def sidebar_filters(df: pd.DataFrame) -> dict:
     return {"year_min": year_min, "year_max": year_max, "region": region, "fed": fed}
 
 def apply_filters(df: pd.DataFrame, f: dict) -> pd.DataFrame:
-    out = df[(df["annee"] >= f["year_min"]) & (df["annee"] <= f["year_max"])].copy()
+    out = df[(df["year"] >= f["year_min"]) & (df["year"] <= f["year_max"])].copy()
     if f["region"] != "Toutes":
         out = out[out["region"] == f["region"]]
     if f["fed"] != "Toutes":

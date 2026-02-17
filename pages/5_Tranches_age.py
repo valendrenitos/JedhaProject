@@ -1,14 +1,10 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-
-@st.cache_data
-def load_data():
-    return pd.read_csv("data/licenses_by_year_region_fed.csv")
-
+import app as mn
 from utils import sidebar_filters, apply_filters
 
-df = load_data()
+df = mn.data1
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 
