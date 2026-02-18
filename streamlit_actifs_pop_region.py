@@ -138,6 +138,9 @@ col4.metric(
 # ---------------------------------- CARTE --------------------------------
 # -------------------------------------------------------------------------
 
+# mini = 
+# maxi = 
+
 st.subheader(f"Ratio licenciés / habitant par région - {annee_sel}")
 
 fig_map = px.choropleth(
@@ -147,7 +150,8 @@ fig_map = px.choropleth(
     featureidkey="properties.nom",  # à adapter selon ton geojson
     color="ratio_total",
     hover_name="region",
-    color_continuous_scale="Viridis"
+    color_continuous_scale="Viridis",
+    #range_color=[mini, maxi]
 )
 
 fig_map.update_geos(fitbounds="locations", visible=False)
@@ -179,20 +183,26 @@ st.subheader("Évolution des licences par sexe (France entière)")
 
 df_evo = licenses.copy()
 
-if fed_sel:
-    df_evo = df_evo[df_evo["nom_fed"].isin(fed_sel)]
+# Filtre fédération si sélection
+#if fed_sel:
+ #   df_evo = df_evo[df_evo["nom_fed"].isin(fed_sel)]
 
-df_evo = df_evo.groupby("annee", as_index=False)[["total_f","total_h"]].sum()
-df_evo = df_evo.melt(id_vars="annee", var_name="Sexe", value_name="Nombre de licences")
+df_evo = df_evo.groupby("annee")[["total_license","total_f","total_h"]].sum().reset_index().sort_values(by="annee")
 
-fig_line = alt.Chart(df_evo).mark_line(point=True).encode(
-    x="annee:O",
-    y="Nombre de licences:Q",
-    color="Sexe:N",
-    tooltip=["annee", "Sexe", "Nombre de licences"]
+# Option 1 : format large (le plus simple)
+fig = px.line(
+    df_evo,
+    x="annee",
+    y=["total_license","total_f", "total_h"],
+    markers=True,
+    labels={
+        "value": "Nombre de licences",
+        "annee": "Année",
+        "variable": "Sexe"
+    }
 )
 
-st.altair_chart(fig_line, use_container_width=True)
+st.plotly_chart(fig, use_container_width=True)
 
 # -------------------------------------------------------------------------
 # ----------------- EVOLUTION RATIO LICENCIES / HABITANT ------------------
