@@ -12,7 +12,7 @@ st.title("⚖️ Parité dans les fédérations")
 
 min_total = st.slider("Seuil minimal de licences sur la période", 0, 200000, 10000, step=1000)
 
-parite = dff.groupby("nom_fed", as_index=False).agg(total_license=("total_lic","sum"),
+parite = dff.groupby(["year","nom_fed"], as_index=False).agg(total_license=("total_lic","sum"),
                                    total_f=("total_f","sum"),
                                    total_h=("total_h","sum"))
 parite["part_femmes"] = parite["total_f"] / parite["total_license"] * 100
