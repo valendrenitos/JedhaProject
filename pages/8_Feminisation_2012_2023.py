@@ -8,7 +8,7 @@ df =mn.data1
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 
-st.title("📌 Féminisation 2012 → 2023")
+st.title(" Féminisation 2012 → 2023")
 
 evol = dff.groupby(["nom_fed","year"], as_index=False).agg(total_license=("total_lic","sum"),
                                            total_f=("total_f","sum"),

@@ -4,11 +4,16 @@ import plotly.express as px
 import app as mn
 from utils import sidebar_filters, apply_filters
 
-df =mn.data1
+df = mn.data1
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 
-st.title("🏆 Analyse par fédération")
+st.title("Analyse par fédération")
+
+# Sélecteur d'année
+années = sorted(dff["year"].unique())
+année_choisie = st.selectbox("Année", années)
+dff = dff[dff["year"] == année_choisie]
 
 metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
 top_n = st.slider("Top N", 5, 50, 15)
@@ -25,6 +30,6 @@ st.dataframe(table.head(50), use_container_width=True)
 fig = px.bar(
     table.head(top_n).sort_values("total"),
     x="total", y="nom_fed", orientation="h",
-    title=f"Top {top_n} fédérations — {metric}"
+    title=f"Top {top_n} fédérations – {metric}"
 )
 st.plotly_chart(fig, use_container_width=True)

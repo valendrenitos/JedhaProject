@@ -7,13 +7,14 @@ from utils import sidebar_filters, apply_filters
 df = mn.data1
 f = sidebar_filters(df)
 
+
 # Ici, filtre fédé utile, mais filtre région "Toutes" pour faire un classement cohérent
 f_for_rank = dict(f)
 f_for_rank["region"] = "Toutes"
 
 dff = apply_filters(df, f_for_rank)
 
-st.title("🗺️ Analyse régions")
+st.title(" Analyse régions")
 
 metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
 top_n = st.slider("Top N régions", 5, 30, 18)
