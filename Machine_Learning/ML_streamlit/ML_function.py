@@ -26,7 +26,6 @@ def LinReg(df_filtered, year):
     regressor=LinearRegression()
     regressor.fit(X_train, y_train)
 
-
     regressor.fit(X, y)
 
 
@@ -44,7 +43,7 @@ def LinReg(df_filtered, year):
          })
     
     else:
-        df_future_pred = pd.DataFrame()
+        df_future_pred = df_filtered
 
 
     return(df_future_pred)
