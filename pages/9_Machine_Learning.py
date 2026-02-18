@@ -10,9 +10,8 @@ data1=mn.data1
 
 fed = st.selectbox("Select a fed you want to see preds", 
                    data1["nom_fed"].sort_values().unique())
-year = 2026
-#st.selectbox("Select a year you want to see your pred",
-        #            data1["year"].sort_values().unique())
+year = st.selectbox("Select a year you want to see your pred",
+                   np.arange(2024,2041))
 
 
 
