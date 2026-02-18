@@ -16,7 +16,7 @@ df_long = (
     .mul(100)
     .rename_axis("federation")
     .reset_index()
-    .melt(id_vars="federation", var_name="annee", value_name="total lics")
+    .melt(id_vars="federation", var_name="annee", value_name="total_lic")
 )
 
 df_long["progression"] = (
@@ -26,13 +26,13 @@ df_long["progression"] = (
 
 fig = px.scatter(
     df_long,
-    x="total lics",
+    x="total_lic",
     y="progression",
     animation_frame="annee",
     animation_group="federation",
     hover_name="federation",
     labels={
-        "total lics": "Total licenciés",
+        "total_lic": "Total licenciés",
         "progression": "Progression depuis l'origine",
         "annee": "Année"
     },
