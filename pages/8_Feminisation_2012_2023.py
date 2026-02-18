@@ -8,6 +8,8 @@ df =mn.data1
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 
+
+
 st.title(" Féminisation 2012 → 2023")
 
 evol = dff.groupby(["nom_fed","year"], as_index=False).agg(total_license=("total_lic","sum"),
@@ -29,7 +31,7 @@ top_n = st.slider("Top N", 5, 50, 20)
 st.subheader(f"Top {top_n} fédérations — plus forte hausse de la part des femmes")
 st.dataframe(evo.head(top_n), use_container_width=True)
 
-# Bonus : choisir une fédération et tracer la série temporelle de part_femmes
+# choisir une fédération pour tracer la série temporelle de part_femmes
 st.subheader("Évolution annuelle (sélection)")
 fed = st.selectbox("Choisir une fédération", sorted(evol["nom_fed"].unique()))
 curve = evol[evol["nom_fed"] == fed].sort_values("year")
