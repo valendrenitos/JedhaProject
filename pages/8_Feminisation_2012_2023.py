@@ -10,7 +10,7 @@ dff = apply_filters(df, f)
 
 st.title("📌 Féminisation 2012 → 2023")
 
-evol = dff.groupby(["nom_fed","year"], as_index=False).agg(total_license=("total_lic","sum"),
+evol = dff.groupby(["year","nom_fed"], as_index=False).agg(total_license=("total_lic","sum"),
                                            total_f=("total_f","sum"),
                                            total_h=("total_h","sum"))
 evol["part_femmes"] = evol["total_f"] / evol["total_license"] * 100
