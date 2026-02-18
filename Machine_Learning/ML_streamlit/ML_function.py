@@ -8,7 +8,6 @@ from sklearn.linear_model import LinearRegression
 
 
 def LinReg(df_filtered, year):
-    df_filtered = data1[data1["nom_fed"] == fed].copy()
     df_filtered = df_filtered.sort_values("year")
 
     df_filtered.loc[df_filtered['year'] == 2021, 'total_lic'] = None
