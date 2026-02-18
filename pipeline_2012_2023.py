@@ -91,6 +91,84 @@ def clean_federation(df):
         df["nom_fed"] = df["nom_fed"].apply(clean_federation_name)
     return df
 
+def normalize_name(text):
+    ''' Agrégation des noms de fédérations similaires pour éviter les doublons'''
+    
+    if pd.isna(text):
+        return text
+
+    # supprimer mots parasites fréquents
+    stopwords = [
+        "FEDERATION", "DISCIPLINES ASSOCIEES", "DISCIPLINES ASSOCIEES",
+        "ET DA", "ET DISCIPLINES ASSOCIEES"
+    ]
+    
+    for word in stopwords:
+        text = text.replace(word, "")
+
+    return text
+
+mapping = {
+    "AIKIDO AIKIBUDO ET AFFINITAIRES": "AIKIDO ET BUDO",
+    "AIKIDO AIKIBUDO ET AINITAIRES": "AIKIDO ET BUDO",
+    "AIKIDO ET BUDO": "AIKIDO ET BUDO",
+    "AIKIDO AIKIBUDO ET A FRANCAISEINITAIRES":"AIKIDO ET BUDO",
+    "AIKIDO, AIKIBUDO ET AFFINITAIRES":"AIKIDO ET BUDO",
+    "BALL TRAP": "BALL TRAP ET TIR A BALLE",
+    "BASEBALL SOFTBALL":"BASEBALL ET SOFTBALL",
+    "BOWLING ET SPORT QUILLES":"BOWLING ET SPORTS QUILLES",
+    "BOXE FRANCAISE SAVATE ET":"BOXE FRANCAISE SAVATE",
+    "CANOE KAYAK ET SPORTS PAGAIE":"CANOE KAYAK",
+    "DES ARTS ENERGETIQUES ET MARTIAUX CHINOIS":"ARTS ENERGETIQUES ET MARTIAUX CHINOIS",
+    "FLYING DISC FRANCE":"FLYING DISC",
+    "HOCKEY SUR GLACE":"HOCKEY",
+    "D\x92HALTEROPHILIE MUSCULATION":'HALTEROPHILIE MUSCULATION',
+    "JOUTES ET SAUVETAGE NAUTIQUE":'JOUTE ET SAUVETAGE NAUTIQUE',
+    "JUDO JUJITSU ET":"JUDO JUJITSU",
+    "JUDO JUJITSU KENDO":"JUDO JUJITSU",
+    "JUDO JUJITSU KENDO ET":"JUDO JUJITSU",
+    "KARATE ET":"KARATE",
+    "KARATE ET DISCIPLINES ASSOCIES":"KARATE",
+    "KICK BOXING MUAY THAI ET":"KICK BOXING MUAY THAI",
+    'LA COURSE CAMARGUAISE':'COURSE CAMARGUAISE',
+    "LA COURSE LANDAISE":"COURSE LANDAISE",
+    "LA COURSE ORIENTATION":"COURSE ORIENTATION",
+    "LA MONTAGNE ET ESCALADE":"MONTAGNE ET ESCALADE",
+    "LA MONTAGNE ET LESCALADE":"MONTAGNE ET ESCALADE",
+    "LA RANDONNEE PEDESTRE":"RANDONNEE PEDESTRE",
+    "LA RETRAITE SPORTIVE":"RETRAITE SPORTIVE",
+    "LUTTE ET":"LUTTE",
+    "NATIONALE AERONAUTIQUE":"AERONAUTIQUE",
+    "NATIONALE SPORT EN MILIEU RURAL":"SPORT EN MILIEU RURAL",
+    "NAUTIQUE PECHE SPORTIVE EN APNEE":"PECHE SPORTIVE EN APNEE",
+    "OMNISPORTS PERSONNELS LEDUCATION NATIONALE":"OMNISPORTS PERSONNELS EDUCATION NATIONALE JEUNESSE ET SPORTS",
+    "OMNISPORTS PERSONNELS LEDUCATION NATIONALE LA JEUNESSE ET SPORTS":"OMNISPORTS PERSONNELS EDUCATION NATIONALE JEUNESSE ET SPORTS",
+    "OMNSISPORTS PERSONNELS LEDUCATION NATIONALE ET JEUNESSE ET SPORTS":"OMNISPORTS PERSONNELS EDUCATION NATIONALE JEUNESSE ET SPORTS",
+    "PLANEUR ULTRA LEGER MOTORISE":"PLANEUR ULTRALEGER MOTORISE",
+    "ROLLER SPORTS":"ROLLER ET SKATEBOARD",
+    "SAVATE BOXE FRANCAISE":"BOXE FRANCAISE SAVATE",
+    "SAVATE BOXE FRANCAISE ET":"BOXE FRANCAISE SAVATE",
+    "SKI NAUTIQUE ET WAKE BOARD":"SKI NAUTIQUE ET WAKEBOARD",  
+    "SPORTIVE ASPTT":"ASPTT",
+    "SPORTIVE LA POLICE NATIONALE":"FEDERATION SPORTIVE LA POLICE NATIONALE",
+    "SPORTIVE TWIRLING BATON":"TWIRLING BATON",
+    "SPORTS BILLARD":"BILLARD",
+    "SPORTS TRAINEAU SKI PULKA ET CROSS CANINS":"PULKA ET TRAINEAU A CHIENS",
+    "SPORTS TRAINEAU":"PULKA ET TRAINEAU A CHIENS",
+    "SPORTS TRAINEAU SKI VTT JOERING ET CANICROSS":"TRAINEAU SKI VTT JOERING ET CANICROSS",
+    "TAEKWONDO ET":"TAEKWONDO",
+    "TRIATHLON":"TRIATHLON ET DISCIPLINES ENCHAINEES",
+    "UNION FRANCAISE \x9cUVRES LAIQUES EDUCATION PHYSIQUE":"UNION FRANCAISE OEUVRES LAIQUES EDUCATION PHYSIQUE",
+    "UNION FRANCAISE ŒUVRES LAIQUES EDUCATION PHYSIQUE":"UNION FRANCAISE OEUVRES LAIQUES EDUCATION PHYSIQUE",
+    "VOLLEY":"VOLLEYBALL",
+    "VOLLEY BALL":"VOLLEYBALL"
+}
+
+def apply_normalize_name(df):
+    df["nom_fed"] = df["nom_fed"].apply(normalize_name).replace(mapping)
+
+    return df
+
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 # 2012 -> 2018
@@ -114,7 +192,7 @@ def rename_columns_2012_2018(df):
         "code_fed": ["fed"],
         "code_commune": ["newcog2", "cog2"],
         "nom_fed": ["federation"],
-        "total_lic": ["l"],
+#       "total_lic": ["l"],
         "total_f": ["l_f"],
         "total_h": ["l_h"],
     }
@@ -139,7 +217,7 @@ def compute_age_categories_2012_2018(df):
         "20_29": ["20_29"],
         "30_59": ["30_44", "45_59"],
         "60_74": ["60_74"],
-        "75": ["75", "75_99"]  # <- inclure 75_99 si présent
+        "75": ["75", "75_99"]  
     }
     
 
@@ -150,6 +228,13 @@ def compute_age_categories_2012_2018(df):
                 df[f"{sex}_{new_cat}"] = df[cols].sum(axis=1)
             else:
                 df[f"{sex}_{new_cat}"] = 0  # si aucune colonne, mettre 0
+    return df
+
+def compute_totals_2012_2023(df):
+    ''' calcul des totaux de licences par sexe'''
+
+    df["total_lic"] = df["total_f"] + df["total_h"]
+
     return df
 
 def import_region(df):
@@ -295,6 +380,7 @@ def transform_lic_file(year: int):
         df = rename_columns_2012_2018(df)
         df = import_dept_num(df)
         df = compute_age_categories_2012_2018(df)
+        df = compute_totals_2012_2023(df)
     else:
         df = rename_columns_2019_2023(df)
         df = format_departement(df)
@@ -305,12 +391,14 @@ def transform_lic_file(year: int):
     if year <= 2014:
         df = import_region(df)
 
-    df = clean_federation(df)    
+    df = clean_federation(df)
+    df = apply_normalize_name(df)    
     df = reorder_columns(df)
 
     return df
 
 if __name__ == "__main__":
+    # Dataset complet par communes :
     all_data = pd.concat(
         [transform_lic_file(year) for year in YEARS],
         ignore_index=True
@@ -318,3 +406,32 @@ if __name__ == "__main__":
 
     all_data.to_csv(OUTPUT_FILE, index=False)
     print(f"✅ Fichier final généré : {OUTPUT_FILE}")
+
+    # Dataset agrégé par région / année / fédération
+    cols_to_sum=[
+    "total_f",
+    "total_h",
+    'h_1_9',
+    'h_10_19',
+    'h_20_29',
+    'h_30_59',
+    'h_60_74',
+    'h_75',
+    'f_1_9',
+    'f_10_19',
+    'f_20_29',
+    'f_30_59',
+    'f_60_74',
+    'f_75']
+    
+    # Forcer les colonnes numériques en int
+    all_data[cols_to_sum] = all_data[cols_to_sum].apply(pd.to_numeric, errors="coerce").astype("Int64")
+    # Agréger en région, avec somme des colonnes numériques (licences)
+    df_region = all_data.groupby(["region",'annee',"nom_fed"])[cols_to_sum].sum().reset_index()
+    # Création de la colonne "total_license" car elle avait été nommé différement dès la création du fichier régional
+    df_region["total_license"] = df_region["total_h"] + df_region["total_f"]
+    
+    region_output = "data/licenses_by_year_region_fed.csv"
+    df_region.to_csv(region_output, index=False)
+
+    print(f"✅ Fichier région agrégé généré : {region_output}")
