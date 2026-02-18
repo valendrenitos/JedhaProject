@@ -6,10 +6,13 @@ import re
 # EXAMPLE ONLY
 #
 ########################
-data_clubs = pd.read_csv("lic_clean_49_24.csv")
-data_clubs = data_clubs.drop(["indexation"],axis=1)
-data_clubs=data_clubs.astype("float64")
+# data_clubs = pd.read_csv("lic_clean_49_24.csv")
+# data_clubs = data_clubs.drop(["indexation"],axis=1)
+# data_clubs=data_clubs.astype("float64")
 
+data_clubs2 = pd.read_csv("total_pred.csv")
+data_clubs2 = data_clubs2.drop(["index"],axis=1)
+data_clubs2=data_clubs2.astype("float64")
 #datamedia = pd.read_csv("data_media.csv")
 # datalicenses=pd.read_csv("data_licenses.csv")
 # datamedia["évènement"]=datamedia["évènement"].astype('str')
@@ -68,11 +71,18 @@ conn=dbc.TryConnect()
 #     conn._execute_query(quer)
 #     conn.commit()
 
-for i,row in data_clubs.iterrows():
-    quer="INSERT INTO media_table.club_total (annee,  olympics,  non_olympics, affinitaire, scholair, total) VALUES ('"+str(row["annee"])+"','"+str(row["olympique"])+"','"+str(row["non-olympique"])+"','"+str(row["affinitaire"])+"','"+str(row["scolaire"])+"','"+str(row["total"])+"')" 
-    print(quer)
-    conn._execute_query(quer)
-    conn.commit()
+# for i,row in data_clubs.iterrows():
+#     quer="INSERT INTO media_table.club_total (annee,  olympics,  non_olympics, affinitaire, scholair, total) VALUES ('"+str(row["annee"])+"','"+str(row["olympique"])+"','"+str(row["non-olympique"])+"','"+str(row["affinitaire"])+"','"+str(row["scolaire"])+"','"+str(row["total"])+"')" 
+#     print(quer)
+#     conn._execute_query(quer)
+#     conn.commit()
+  
+
+# for i,row in data_clubs2.iterrows():
+#     quer="INSERT INTO media_table.club_total (annee,  olympics,  non_olympics, affinitaire, scholair, total) VALUES ('"+str(row["annee"])+"','"+str(row["olympique_pred"])+"','0','0','0','"+str(row["total_pred"])+"')" 
+#     print(quer)
+#     conn._execute_query(quer)
+#     conn.commit()
   
 
 dbc.CloseCon(conn)
