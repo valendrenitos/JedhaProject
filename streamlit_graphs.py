@@ -9,16 +9,28 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
     
     
     data3read=data3[data3["annee"]>2010]
-
+    datapred=data3[data3["annee"]>2023]
     fig = go.Figure()
 
     fig.add_trace(
         go.Scatter(
-            x=data3read["annee"],
+            x=data3read[data3read["annee"]<2025],
             y=data3read["total"],
             mode='lines+markers',
             name="This year - Total licenses",
             line=dict(color='royalblue', width=3),
+            marker=dict(size=8),
+            yaxis="y"          
+        )
+    )
+
+    fig.add_trace(
+        go.Scatter(
+            x=datapred["annee"],
+            y=datapred["total"],
+            mode='lines+markers',
+            name="This year - Total licenses",
+            line=dict(color='royalblue', width=3, dash='dash'),
             marker=dict(size=8),
             yaxis="y"          
         )
