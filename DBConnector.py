@@ -61,7 +61,9 @@ def getData():
         rows = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
         data4 = pd.DataFrame(rows, columns=columns)
+        
         cur.close()
+        
         CloseCon(conn)
         return data1,data2,data3,data4
 
