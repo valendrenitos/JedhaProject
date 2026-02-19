@@ -63,3 +63,35 @@ st.markdown("""
 
 </div>
 """, unsafe_allow_html=True)
+
+st.title("La médiatisation du sport féminin en France, levier d'accessibilité au sport")
+
+st.markdown("""
+<style>
+.custom-box {
+    max-width: 700px;
+    margin-left: 150px;
+    margin-right: auto;
+    border: 6px solid indianred;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 4px 12px rgba(0,0,0,0.15);
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="custom-box">
+    <h4>Insights</h4>
+    <h2>Le sport féminin en forte croissance</h2>
+    <ul>
+        <li><b>+35,5%</b> de licenciées entre 2012 et 2023 : : 4,1m à 6,4m</li>
+        <li><b>xxx</li>
+        <li>xxx</li>
+        <li>xxx</li>
+        <li>xxx</li>
+        <li>xxx<b>d'Union Scolaire</b> (+310k), <b>du Basketball</b> (+121k), <b>de Tir</b> (+111k) et <b>de natation</b> (+107k) </li>
+    </ul>
+
+</div>
+""", unsafe_allow_html=True)
