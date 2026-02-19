@@ -32,6 +32,14 @@ df_grouped['progression_pct'] = (
               *100
 )
 
+total_evol = (
+    df_grouped.groupby("nom_fed")["progression_pct"]
+    .max()
+    .sort_values(ascending=False)
+)
+
+print(total_evol.head(10))
+
 
 fig = px.scatter(
     df_grouped,
