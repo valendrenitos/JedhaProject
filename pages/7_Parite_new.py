@@ -3,20 +3,12 @@ import pandas as pd
 import plotly.express as px
 import app as mn
 from utils import sidebar_filters, apply_filters
-import streamlit_graphs as stg
+
 df = mn.data1
-data2=mn.data2
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
-st.set_page_config(
-        page_title="Sport & Femmes : Les médias comme levier ?"
-)
-st.title("Sport & Femmes : Les médias comme levier ?")
 
-
-
-######~INSIGHT MEDIA
-
+st.title(" Parité dans les fédérations sportives")
 st.divider()
 
 # controleurs
@@ -50,7 +42,6 @@ k2.metric(" Part femmes moyenne", f"{part_moy:.1f}%")
 k3.metric(" Plus féminisée",plus_fem)
 k4.metric(" Moins féminisée", moins_fem)
 
-
 st.divider()
 
 # Top 10 plus / moins féminisées
@@ -71,18 +62,23 @@ with c2:
         use_container_width=True, hide_index=True,
     )
 
-    st.header("🚻 Comparaison des médias sur le sport féminins avec le nombre de licenses")
+st.divider()
 
+# histo
+st.subheader("Distribution de la part des femmes")
 
-datatreated1=df.groupby(["year"], as_index=False).agg(total_f=('total_f','sum'))   
-data2=data2[data2['genre']=='féminin']
-fig_media_lic=stg.graph_comparaison_media_lic_sex(datatreated1,data2)
+fig = px.histogram(
+    parite, x="part_femmes", nbins=30,
+    title=f"Répartition des fédérations par part des femmes — {année_choisie}",
+    labels={"part_femmes": "Part des femmes (%)"},
+)
+fig.add_vline(x=50, line_dash="dash", annotation_text="Parité (50%)", annotation_position="top right")
+fig.add_vline(x=part_moy, line_dash="dot", annotation_text=f"Moyenne ({part_moy:.1f}%)", annotation_position="top left")
+fig.update_layout(bargap=0.1, xaxis_range=[0, 100])
+st.plotly_chart(fig, use_container_width=True)
 
-
-st.plotly_chart(fig_media_lic, use_container_width='stretch')
-
-st.header("Taille vs féminisation")
-
+# splatter
+st.subheader("Taille vs féminisation")
 
 fig2 = px.scatter(
     parite, x="total_lic", y="part_femmes",
@@ -93,11 +89,3 @@ fig2 = px.scatter(
 )
 fig2.add_hline(y=50, line_dash="dash", annotation_text="Parité")
 st.plotly_chart(fig2, use_container_width=True)
-
-st.header("🚻 évolution du pourcentage de licenses féminines dans les fédérations sportives par an")
-
-fig_percent = stg.graph_evolution_women_fed(df)
-
-st.plotly_chart(fig_percent, use_container_width=True)
-
-
