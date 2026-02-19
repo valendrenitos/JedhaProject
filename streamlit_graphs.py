@@ -204,3 +204,31 @@ def graph_evolution_women_fed(df):
     fig.update_yaxes(range=[-10, 35])
 
     return fig
+
+
+
+
+def pie_chart(df):
+    df.loc[(
+        df["sport_event"]=="Roland Garros") & (df["year"]==2016),
+        "genre"] = "mixte"
+
+
+    
+
+    data_pie = df.groupby("genre", as_index=False)["avrg_tv_aud"].sum()
+
+    color_map = {
+        "féminin": "#f59a53",
+        "masculin": "#0e1f3a",
+        "mixte": "#5a815c"
+    }
+
+    fig_target = go.Figure(data=[go.Pie(labels=data_pie["genre"],
+                                        values=data_pie["avrg_tv_aud"],
+                                        hole=.3,
+                                        marker=dict(
+                    colors=[color_map[g] for g in data_pie["genre"]])
+                                    )])
+
+    return fig_target

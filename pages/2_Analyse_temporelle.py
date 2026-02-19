@@ -68,8 +68,20 @@ st.plotly_chart(fig_media_lic, use_container_width='stretch')
 
 
 ######## CAMEMBERT
+year_filter= st.multiselect("Choisir une année", 
+                             data2["annee"].sort_values().unique(), 
+                             placeholder=None,
+                             label_visibility="visible", 
+                             accept_new_options=False, 
+                             width="stretch")
+if len(year_filter)>0:
+    year_filters= data2[data2["year"].isin(year_filter)]
+else:
+    year_filters=data2
 
 
+fig_target=stg.pie_chart(year_filters)
+st.plotly_chart(fig_target, use_container_width=True)
 
 
 
