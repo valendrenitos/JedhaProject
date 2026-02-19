@@ -60,7 +60,7 @@ if len(fede_filter)>0:
 else:
     license_filters=data1
  
-datatreated1=data1.groupby(["year"], as_index=False).agg(total_license=('total_lic','sum'))   
+datatreated1=data1.groupby(["year"], as_index=False).agg(total_lic=('total_lic','sum'))   
 fig_media_lic=stg.graph_comparaison_media_lic(datatreated1,event_coverage,data3,sport_events)
 
 
@@ -69,7 +69,7 @@ st.plotly_chart(fig_media_lic, use_container_width='stretch')
 
 ######## CAMEMBERT
 year_filter= st.multiselect("Choisir une année", 
-                             data2["annee"].sort_values().unique(), 
+                             data2["year"].sort_values().unique(), 
                              placeholder=None,
                              label_visibility="visible", 
                              accept_new_options=False, 
