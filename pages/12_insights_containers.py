@@ -99,3 +99,33 @@ st.markdown("""
 
 </div>
 """, unsafe_allow_html=True)
+
+
+st.title("La médiatisation du sport, vecteur d'augmentation des licences sportives")
+
+st.markdown("""
+<style>
+.custom-box {
+    max-width: 700px;
+    margin-left: 150px;
+    margin-right: auto;
+    border: 6px solid indianred;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 4px 12px rgba(0,0,0,0.15);
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="custom-box">
+    <h4>Insights</h4>
+    <h2>Une augmentation des audiences TV continue sur la période</h2>
+    <ul>
+        <li>Un effet JO marqué : un nombre de licences à la hausse après des événements sportifs très médiatisés</li>
+        <li>Une tendance à la hausse qui vient confirmer des prédictions d'augmentation du nombre de licences </li>
+        <li>Des événements sportifs masculins qui demeurent les plus médiatisés à la TV</li>
+        <li>Un effet COVID qui a redonné de l'élan à la médiatisation du sport</li>
+    </ul>
+
+</div>
