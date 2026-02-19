@@ -8,13 +8,14 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
     datatreated1=data1.groupby(["year"], as_index=False).agg(total_license=('total_lic','sum'))
     
     
-    data3read=data3[data3["annee"]>2010]
+    data3read=data3[(data3["annee"]>2010) & (data3["annee"]<2025) ]
     datapred=data3[data3["annee"]>2023]
+    
     fig = go.Figure()
 
     fig.add_trace(
         go.Scatter(
-            x=data3read[data3read["annee"]<2025],
+            x=data3read["annee"],
             y=data3read["total"],
             mode='lines+markers',
             name="This year - Total licenses",
