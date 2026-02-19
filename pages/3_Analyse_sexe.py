@@ -1,15 +1,23 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import app as mn
+import streamlit_app as mn
 from utils import sidebar_filters, apply_filters
 import streamlit_graphs as stg
 df = mn.data1
+with st.sidebar:
+    st.page_link("streamlit_app.py", label="Accueil", icon="🏠")
+    st.page_link("pages/1_Vue_ensemble.py", label="Vue d'ensemble du sport en France", icon="💪")
+    st.page_link("pages/2_Analyse_temporelle.py", label="Analyse temporelle du sport en France", icon="📈")
+    st.page_link("pages/3_Analyse_sexe.py", label="Sport & Femmes : Les médias comme levier ?", icon="♀️")
+    st.page_link("pages/4_Annexes.py", label="Annexes ", icon="📋")
 data2=mn.data2
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 st.set_page_config(
-        page_title="Sport & Femmes : Les médias comme levier ?"
+    page_title="Sport & Femmes : Les médias comme levier ?",
+    page_icon="📈",
+    layout="wide"
 )
 
 
@@ -84,7 +92,6 @@ k3.metric(" Plus féminisée",plus_fem)
 k4.metric(" Moins féminisée", moins_fem)
 
 
-st.divider()
 
 # Top 10 plus / moins féminisées
 cols = ["nom_fed", "part_femmes", "total_lic"]
@@ -104,6 +111,7 @@ with c2:
         use_container_width=True, hide_index=True,
     )
 
+st.divider()
 
 st.header("🚻 Comparaison des médias sur le sport féminins avec le nombre de licenses")
 
@@ -114,6 +122,7 @@ fig_media_lic=stg.graph_comparaison_media_lic_sex(datatreated1,data2)
 
 
 st.plotly_chart(fig_media_lic, use_container_width='stretch')
+st.divider()
 
 st.header("Taille vs féminisation")
 
@@ -127,6 +136,7 @@ fig2 = px.scatter(
 )
 fig2.add_hline(y=50, line_dash="dash", annotation_text="Parité")
 st.plotly_chart(fig2, use_container_width=True)
+st.divider()
 
 st.header("🚻 évolution du pourcentage de licenses féminines dans les fédérations sportives par an")
 

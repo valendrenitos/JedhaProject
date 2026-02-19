@@ -1,7 +1,10 @@
 import streamlit as st
 import pandas as pd
 
+
+    
 def sidebar_filters(df: pd.DataFrame) -> dict:
+
     st.sidebar.header("Filtres")
 
     years = sorted(df["year"].unique())

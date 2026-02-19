@@ -1,9 +1,14 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import app as mn
+import streamlit_app as mn
 from utils import sidebar_filters, apply_filters
-
+with st.sidebar:
+    st.page_link("streamlit_app.py", label="Accueil", icon="🏠")
+    st.page_link("pages/1_Vue_ensemble.py", label="Vue d'ensemble du sport en France", icon="💪")
+    st.page_link("pages/2_Analyse_temporelle.py", label="Analyse temporelle du sport en France", icon="📈")
+    st.page_link("pages/3_Analyse_sexe.py", label="Sport & Femmes : Les médias comme levier ?", icon="♀️")
+    st.page_link("pages/4_Annexes.py", label="Annexes ", icon="📋")
 df = mn.data1
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
@@ -298,7 +303,6 @@ top_regresseur   = evo.iloc[-1]["nom_fed"] if len(evo) > 0 else "—"
 k1, k2, k3, k4 = st.columns(4)
 k1.metric(f"♀️ Part femmes {année_debut}", f"{part_globale_debut:.1f}%")
 k2.metric(f"♀️ Part femmes {année_fin}",   f"{part_globale_fin:.1f}%")
-
 
 st.divider()
 

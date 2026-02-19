@@ -2,11 +2,21 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from utils import sidebar_filters, apply_filters
-import app as mn
+import streamlit_app as mn
 import plotly.express as px
 import json
 
-st.set_page_config(layout="wide")
+st.set_page_config(
+    page_title="Vue d'ensemble du sport en France",
+    page_icon="💪",
+    layout="wide"
+)
+with st.sidebar:
+    st.page_link("streamlit_app.py", label="Accueil", icon="🏠")
+    st.page_link("pages/1_Vue_ensemble.py", label="Vue d'ensemble du sport en France", icon="💪")
+    st.page_link("pages/2_Analyse_temporelle.py", label="Analyse temporelle du sport en France", icon="📈")
+    st.page_link("pages/3_Analyse_sexe.py", label="Sport & Femmes : Les médias comme levier ?", icon="♀️")
+    st.page_link("pages/4_Annexes.py", label="Annexes ", icon="📋")
 df = mn.data1
 data4=pd.read_csv("pop_by_region.csv")
 f = sidebar_filters(df)
@@ -70,88 +80,99 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 st.header(" ")
-
+st.subheader("Aperçu des données")
 c1, c2, c3, c4 = st.columns(4)
 c1.metric("Période", f"{dff['year'].min()} → {dff['year'].max()}")
 c2.metric("Observations", f"{len(dff):,}".replace(",", " "))
 c3.metric("Régions", dff["region"].nunique())
 c4.metric("Fédérations", dff["nom_fed"].nunique())
 
-st.subheader("Aperçu des données")
+
 st.dataframe(dff.head(50), use_container_width=True)
 
+st.divider()
 
-
+st.subheader("Analyse par région")
 ### CARTE DE FRANCEE
+c1, c2 = st.columns(2)
 
-# ---- Charger GeoJSON des régions ----
-with open("regions.geojson", "r", encoding="utf-8") as regjson:
-    regions_geojson = json.load(regjson)
 
-dftemp=df[df["year"]==2016]
-df_region = dftemp.groupby(["year","region"], as_index=False).agg(total_lic=(
-    "total_lic", "sum"), total_f=(
-    "total_f", "sum"),total_h=(
-    "total_h", "sum"
-    ))
+with c1:
+    year_select= st.selectbox("Choisir une année", 
+                             df["year"].sort_values().unique(), 
+                             placeholder=None,
+                             label_visibility="visible", 
+                             accept_new_options=False, 
+                             width="stretch")
+    if len(str(year_select))>0:
+        dftemp=df[df["year"]==year_select]
+    else:
+        dftemp=df[df["year"]==2012]
+    with open("regions.geojson", "r", encoding="utf-8") as regjson:
+        regions_geojson = json.load(regjson)
 
-# ---- Merge avec population ----
+        
+        dftemp["region"]=dftemp["region"].replace({"dAzur":"d'Azur"}, regex=True)
+        print(dftemp["region"].unique())
+        df_region = dftemp.groupby(["year","region"], as_index=False).agg(total_lic=(
+            "total_lic", "sum"), total_f=(
+            "total_f", "sum"),total_h=(
+            "total_h", "sum"
+            ))
 
-df_region = df_region.merge(data4, left_on="region", right_on="reg", how="left")
-# ---- Calcul ratios ----
-df_region["ratio_total"] = df_region["total_lic"] / df_region["pop"]
-df_region["ratio_f"] = df_region["total_f"] / df_region["pop"]
 
-# # -------------------------------------------------------------------------
-# # ---------------------------------- CARTE --------------------------------
-# # -------------------------------------------------------------------------
+    df_region = df_region.merge(data4, left_on="region", right_on="reg", how="left")
 
-# # mini = à définir
-# # maxi = à définir
+    df_region["ratio_licencié_habitant"] = df_region["total_lic"] / df_region["pop"]
+    df_region["ratio_f"] = df_region["total_f"] / df_region["pop"]
 
-st.subheader(f"Ratio licenciés / habitant par région -")
 
-fig_map = px.choropleth(
-    df_region,
-    geojson=regions_geojson,
-    locations="region",
-    featureidkey="properties.nom",  
-    color="ratio_total",
-    hover_name="region",
-    color_continuous_scale="Viridis",
-    
-)
 
-fig_map.update_geos(fitbounds="locations", visible=False)
-fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+    st.subheader(f"Ratio licenciés / habitant par région - {year_select}")
 
-st.plotly_chart(fig_map, use_container_width=True)
-##TABLEAU FEDE REGION
+    fig_map = px.choropleth(
+        df_region,
+        geojson=regions_geojson,
+        locations="region",
+        featureidkey="properties.nom",  
+        color="ratio_licencié_habitant",
+        hover_name="region",
+        color_continuous_scale="Viridis",
+        range_color=[0, 0.5]
+        
+    )
 
-f_for_rank = dict(f)
-f_for_rank["region"] = "Toutes"
+    fig_map.update_geos(fitbounds="locations", visible=False)
+    fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-dff = apply_filters(df, f_for_rank)
+    st.plotly_chart(fig_map, use_container_width=True)
 
-st.title(" Analyse régions")
+with c2:
 
-metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
-top_n = st.slider("Top N régions", 5, 30, 18)
+    f_for_rank = dict(f)
+    f_for_rank["region"] = "Toutes"
 
-by_region = dff.groupby("region")[metric].sum().sort_values(ascending=False)
-total_nat = by_region.sum()
+    dff = apply_filters(df, f_for_rank)
 
-rank = by_region.reset_index().rename(columns={metric: "Total"})
-rank["Part (%)"] = (rank["Total"] / total_nat * 100).round(2)
 
-st.dataframe(rank, use_container_width=True)
 
-fig = px.bar(rank.head(top_n).sort_values("Total"), x="Total", y="region", orientation="h",
-             title=f"Top {top_n} régions — {metric}")
-st.plotly_chart(fig, use_container_width=True)
+    metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
+    top_n = st.slider("Top N régions", 5, 30, 18)
+
+    by_region = dff.groupby("region")[metric].sum().sort_values(ascending=False)
+    total_nat = by_region.sum()
+
+    rank = by_region.reset_index().rename(columns={metric: "Total"})
+    rank["Part (%)"] = (rank["Total"] / total_nat * 100).round(2)
+
+    st.dataframe(rank, use_container_width=True)
+
+st.divider()
+
+
 
 #### Separation age 
-
+st.subheader("Comparaison par tranche d'âge et sexe")
 col1, col2, col3 = st.columns([2, 2, 3])
 
 with col1:
@@ -189,7 +210,6 @@ k2.metric(" Total Hommes",      f"{total_h_global:,.0f}")
 k3.metric(" Total Femmes",      f"{total_f_global:,.0f}")
 
 
-st.divider()
 
 # disposition
 col_bar, col_donut = st.columns([3, 2])
@@ -233,8 +253,9 @@ with col_donut:
     st.plotly_chart(fig_donut, use_container_width=True)
 
 
+st.divider()
 
-
+st.subheader("Analyse par fédération")
 # controle
 col1, col2, col3 = st.columns(3)
 
@@ -271,27 +292,30 @@ k1.metric(" Total licenciés", f"{total_global:,.0f}")
 k2.metric(" N°1", top1_fed)
 k3.metric(" Part du Top 3", f"{top3_share:.1f}%")
 
-st.divider()
+
+c1, c2 = st.columns(2)
+
 
 # graph
 table = by_fed.reset_index().rename(columns={metric: "Total"})
-
-fig = px.bar(
-    table.head(top_n).sort_values("Total"),
-    x="Total", y="nom_fed", orientation="h",
-    title=f"Top {top_n} fédérations — {année_choisie}",
-    labels={"nom_fed": "Fédération", "Total": "Licenciés"},
-    text_auto=".2s",
-)
-fig.update_layout(yaxis_title="", xaxis_title="Licenciés")
-st.plotly_chart(fig, use_container_width=True)
+with c1:
+    fig = px.bar(
+        table.head(top_n).sort_values("Total"),
+        x="Total", y="nom_fed", orientation="h",
+        title=f"Top {top_n} fédérations — {année_choisie}",
+        labels={"nom_fed": "Fédération", "Total": "Licenciés"},
+        text_auto=".2s",
+    )
+    fig.update_layout(yaxis_title="", xaxis_title="Licenciés")
+    st.plotly_chart(fig, use_container_width=True)
 
 # tableau
-with st.expander(" Voir le tableau complet"):
+with c2:
+
     table["% du total"] = (table["Total"] / total_global * 100).round(1).astype(str) + "%"
     st.dataframe(table, use_container_width=True, hide_index=True)
 
-
+st.divider()
 #### ptit points qui dance
 
 
