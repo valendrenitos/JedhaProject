@@ -8,7 +8,12 @@ df = mn.data1
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 
-st.title("🎂 Analyse par tranches d’âge")
+st.title("Analyse par tranches d’âge")
+
+# Filtre année
+années = sorted(dff["year"].unique())
+année_choisie = st.selectbox("Année", années)
+dff = dff[dff["year"] == année_choisie]
 
 colonnes_age_h = ["h_1_9", "h_10_19", "h_20_29", "h_30_59", "h_60_74", "h_75"]
 colonnes_age_f = ["f_1_9", "f_10_19", "f_20_29", "f_30_59", "f_60_74", "f_75"]

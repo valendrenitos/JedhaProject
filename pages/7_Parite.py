@@ -8,7 +8,7 @@ df = mn.data1
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 
-st.title("⚖️ Parité dans les fédérations")
+st.title(" Parité dans les fédérations")
 
 min_total = st.slider("Seuil minimal de licences sur la période", 0, 200000, 10000, step=1000)
 
