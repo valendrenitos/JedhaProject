@@ -6,39 +6,29 @@ import app as mn
 df =mn.data1
 
 
-rolling_avg = (
-    df.groupby(["year","nom_fed" ])["total_lic"].sum()
-).unstack("year").rolling(3, axis=1, min_periods=1).mean()
 
-df=df.groupby(['nom_fed','year'], as_index=False).agg(total_lic=('total_lic','sum'))
+df_grouped = df.groupby(['nom_fed','year'], as_index=False)['total_lic'].sum()
 
-df['total_lic_rolling3'] = df['total_lic'].rolling(window=3).mean()
-print(df.head(50))
-df_long = (
-    rolling_avg
-    .rename_axis("federation")
-    .reset_index()
-    .melt(id_vars="federation", var_name="annee", value_name="total_lics")
+df_grouped = df_grouped.sort_values(['nom_fed','year'])
+
+df_grouped['progression_pct'] = (
+    df_grouped.groupby('nom_fed')['total_lic']
+              .pct_change() 
+              *100
 )
-print(df_long.head(50))
 
-df_long["progression"] = (
-    df_long.groupby(["federation","annee"])["total_lics"]
-    .transform(lambda s: s - s.iloc[0])
-)
-df_long.info()
-print(df_long.head(20))
+
 fig = px.scatter(
-    df_long,
-    x="total_lics",
-    y="progression",
-    animation_frame="annee",
-    animation_group="federation",
-    hover_name="federation",
+    df_grouped,
+    x="total_lic",
+    y="progression_pct",
+    animation_frame="year",
+    animation_group="nom_fed",
+    hover_name="nom_fed",
     labels={
         "total lics": "Total licenciés",
-        "progression": "Progression depuis l'origine",
-        "annee": "Année"
+        "progression_pct": "Progression depuis l'origine",
+        "year": "Année"
     },
     title="Évolution des licenciés par fédération",
     height=750
@@ -47,7 +37,7 @@ fig = px.scatter(
 fig.add_vline(x=50, line_dash="dash", line_color="red", opacity=0.5)
 fig.add_hline(y=0, line_dash="dash", line_color="red", opacity=0.5)
 
-fig.update_xaxes(range=[0, max(df_long["total_lics"])])
-fig.update_yaxes(range=[-1000, 1000])
+fig.update_xaxes(range=[df_grouped["total_lic"].min(), df_grouped["total_lic"].max()])
+fig.update_yaxes(range=[-35,35])
 
 st.plotly_chart(fig, use_container_width=True)
