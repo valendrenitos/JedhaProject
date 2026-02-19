@@ -18,6 +18,36 @@ data3=mn.data3
 data2=mn.data2
 
 
+
+st.title("La médiatisation du sport, vecteur d'augmentation des licences sportives")
+
+st.markdown("""
+<style>
+.custom-box {
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 6px solid indianred;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 4px 12px rgba(0,0,0,0.15);
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="custom-box">
+    <h4>Insights</h4>
+    <h2>Une augmentation des audiences TV continue sur la période</h2>
+    <ul>
+        <li>Un effet JO marqué : un nombre de licences à la hausse après des événements sportifs très médiatisés</li>
+        <li>Une tendance à la hausse qui vient confirmer des prédictions d'augmentation du nombre de licences </li>
+        <li>Des événements sportifs masculins qui demeurent les plus médiatisés à la TV</li>
+        <li>Un effet COVID qui a redonné de l'élan à la médiatisation du sport</li>
+    </ul>
+
+</div>
+""", unsafe_allow_html=True)
 metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
 ts = dff.groupby("year")[metric].sum().reset_index()
 ts["variation_%"] = ts[metric].pct_change() * 100
@@ -34,7 +64,7 @@ with c2:
         fig = px.bar(ts, x="year", y="variation_%", title=f"Variation annuelle (%) — {metric}")
     st.plotly_chart(fig, use_container_width=True)
 
-data3.loc[(data3["annee"] >= 2016) & (data3["annee"] <= 2024), "total"] /= 2.6
+
 sport_events= st.multiselect("Choisir un évenement", 
                              data2["year"].sort_values().unique(), 
                              placeholder=None,
@@ -61,6 +91,7 @@ else:
     license_filters=data1
  
 datatreated1=data1.groupby(["year"], as_index=False).agg(total_lic=('total_lic','sum'))   
+
 fig_media_lic=stg.graph_comparaison_media_lic(datatreated1,event_coverage,data3,sport_events)
 
 
@@ -95,14 +126,6 @@ year = st.selectbox("Select a year you want to see your pred",
 df_filtered=data1[data1["nom_fed"]==fed]
 try:
     df_future_pred = mlf.LinReg(df_filtered, year)
-
-    
-
-    st.write(f"Prediction for {year}:",year)
-    st.write("Future predictions:")
-    st.dataframe(df_future_pred)
-
-
 
     x=df_future_pred["year"]
     y=df_future_pred["total_lic"]

@@ -11,11 +11,44 @@ dff = apply_filters(df, f)
 st.set_page_config(
         page_title="Sport & Femmes : Les médias comme levier ?"
 )
-st.title("Sport & Femmes : Les médias comme levier ?")
 
 
 
 ######~INSIGHT MEDIA
+
+
+
+
+st.title("La médiatisation du sport féminin en France, levier d'accessibilité au sport")
+
+st.markdown("""
+<style>
+.custom-box {
+    max-width: 1500px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 6px solid indianred;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 2px 4px 12px rgba(0,0,0,0.15);
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<div class="custom-box">
+    <h4>Insights</h4>
+    <h2>Le sport féminin en forte croissance</h2>
+    <ul>
+        <li><b>+35,5%</b> de licenciées entre 2012 et 2023 : : 4,1m à 6,4m</li>
+        <li>Le top 3 des fédérations avec la plus grande part de femmes restent des disciplines historiquement connotées : <b>gymnastique (92,6%)</b>, <b>danse (86,9%)</b>, <b>sports de glace (84,6%)</b> </li>
+        <li>Sur la période, le nombre de licenciées est en forte augmentation dans des sports considérés comme traditionnellement masculins</li>
+        <li>Depuis 2019 avec <b>90m d'audience</li>, le sport féminin voit ses audiences TV décoller</li>
+    </ul>
+
+</div>
+""", unsafe_allow_html=True)
+
 
 st.divider()
 
@@ -71,7 +104,8 @@ with c2:
         use_container_width=True, hide_index=True,
     )
 
-    st.header("🚻 Comparaison des médias sur le sport féminins avec le nombre de licenses")
+
+st.header("🚻 Comparaison des médias sur le sport féminins avec le nombre de licenses")
 
 
 datatreated1=df.groupby(["year"], as_index=False).agg(total_f=('total_f','sum'))   

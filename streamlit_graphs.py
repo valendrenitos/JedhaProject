@@ -62,7 +62,7 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
 
 
     fig.update_layout(
-        title="COmparaison de l'évolution du nombre de licenses par rapport au nombre de téléspectateur moyen",
+        title="Comparaison de l'évolution du nombre de licenses par rapport au nombre de téléspectateur moyen",
         xaxis_title="Année",
         
         
