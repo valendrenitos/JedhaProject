@@ -90,11 +90,9 @@ st.markdown("""
     <h2>Le sport féminin en forte croissance</h2>
     <ul>
         <li><b>+35,5%</b> de licenciées entre 2012 et 2023 : : 4,1m à 6,4m</li>
-        <li><b>xxx</li>
-        <li>xxx</li>
-        <li>xxx</li>
-        <li>xxx</li>
-        <li>xxx<b>d'Union Scolaire</b> (+310k), <b>du Basketball</b> (+121k), <b>de Tir</b> (+111k) et <b>de natation</b> (+107k) </li>
+        <li>Le top 3 des fédérations avec la plus grande part de femmes restent des disciplines historiquement connotées : <b>gymnastique (92,6%)</b>, <b>danse (86,9%)</b>, <b>sports de glace (84,6%)</b> </li>
+        <li>Sur la période, le nombre de licenciées est en forte augmentation dans des sports considérés comme traditionnellement masculins</li>
+        <li>Depuis 2019 avec <b>90m d'audience</li>, le sport féminin voit ses audiences TV décoller</li>
     </ul>
 
 </div>
