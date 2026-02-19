@@ -21,14 +21,14 @@ def load_data():
     
     return data1,data2,data3 
 
-data1,data2,data3=load_data()
+data1,data2,data3,data4=load_data()
 data3.loc[(data3["annee"] >= 2016) & (data3["annee"] <= 2024), "total"] /= 2.6
 
 
 # DATA 1 : LICENSES : COLONNES : year,  region,  nom_fed, total_lic, total_f, total_h, h_1_9, h_10_19, h_20_29,h_30_59,h_60_74, h_75, f_1_9, f_10_19, f_20_29, f_30_59, f_60_74, f_75
 # DATA 2 : Medias : sport_event,sport,year,avrg_tv_aud,avrg_tv_match,total_match,hours_live,numb_of_post,genre
 # DATA 3 Club 49-23 : annee,  olympics,  non_olympics, affinitaire, scholair, total
-
+# DATA 4 rec : annee , reg, pop
 st.subheader("Problématique")
 
 st.markdown("""

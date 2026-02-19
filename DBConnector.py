@@ -8,6 +8,7 @@ load_dotenv()
 queryLicenses=os.environ["QUERY_LICENSES"]
 queryMedias=os.environ["QUERY_MEDIAS"]
 queryClubs=os.environ["QUERY_CLUBS"]
+queryRec=os.environ["QUERY_REC"]
 conn = None
 
 def CloseCon(conn):
@@ -55,9 +56,14 @@ def getData():
         rows = cur.fetchall()
         columns = [desc[0] for desc in cur.description]
         data3 = pd.DataFrame(rows, columns=columns)
+        
+        cur.execute(queryRec)
+        rows = cur.fetchall()
+        columns = [desc[0] for desc in cur.description]
+        data4 = pd.DataFrame(rows, columns=columns)
         cur.close()
         CloseCon(conn)
-        return data1,data2,data3
+        return data1,data2,data3,data4
 
 
 
