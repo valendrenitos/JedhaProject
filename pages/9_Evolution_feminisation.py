@@ -64,7 +64,9 @@ textes_par_annee = {
     2017: "On est en 2017 ",
 }
 
+
 # Bouton
+texte_defaut = "Aucune analyse disponible pour cette année."
 if st.button("Afficher l'analyse"):
     st.write(textes_par_annee.get(annee_selectionnee, texte_defaut))
 else:
