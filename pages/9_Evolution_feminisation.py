@@ -50,3 +50,22 @@ fig.update_xaxes(range=[0, 100])
 fig.update_yaxes(range=[-10, 35])
 
 st.plotly_chart(fig, use_container_width=True)
+
+# Récupérer les années qu'on veut 
+annees = sorted(df_long["annee"].unique())
+
+# Sélecteur d'année
+annee_selectionnee = st.selectbox("Sélectionnez une année", annees)
+
+# Dictionnaire des textes par année
+textes_par_annee = {
+    2015: "texte",
+    2016: "texte",
+    2017: "texte",
+}
+
+# Bouton
+if st.button("Afficher l'analyse"):
+    st.write(textes_par_annee.get(annee_selectionnee, texte_defaut))
+else:
+    st.info("Sélectionnez une année puis cliquez sur le bouton.")
