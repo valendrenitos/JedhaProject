@@ -41,11 +41,15 @@ st.dataframe(sex, use_container_width=True)
 
 
 
+st.header("🚻 évolution du pourcentage de licenses féminines dans les fédérations sportives par an")
+
+fig_percent = stg.graph_evolution_women_fed(df)
+
+st.plotly_chart(fig_percent, use_container_width=True)
 
 
 
-
-
+st.header("🚻 Comparaison des médias sur le sport féminins avec le nombre de licenses")
 
 
 datatreated1=df.groupby(["year"], as_index=False).agg(total_f=('total_f','sum'))   
