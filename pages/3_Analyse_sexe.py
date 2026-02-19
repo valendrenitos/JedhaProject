@@ -3,12 +3,18 @@ import pandas as pd
 import plotly.express as px
 import app as mn
 from utils import sidebar_filters, apply_filters
-
+import streamlit_graphs as stg
 df = mn.data1
+data2=mn.data2
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
 
 st.title("🚻 Analyse Hommes / Femmes")
+
+
+
+######~INSIGHT MEDIA
+
 
 sex = dff.groupby("year")[["total_h", "total_f"]].sum().reset_index()
 sex["total"] = sex["total_h"] + sex["total_f"]
@@ -31,3 +37,20 @@ else:
 
 st.plotly_chart(fig, use_container_width=True)
 st.dataframe(sex, use_container_width=True)
+
+
+
+
+
+
+
+
+
+
+
+datatreated1=df.groupby(["year"], as_index=False).agg(total_f=('total_f','sum'))   
+data2=data2[data2['genre']=='féminin']
+fig_media_lic=stg.graph_comparaison_media_lic_sex(datatreated1,data2)
+
+
+st.plotly_chart(fig_media_lic, use_container_width='stretch')

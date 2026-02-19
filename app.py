@@ -4,7 +4,6 @@ import plotly.express as px
 import plotly.graph_objects as go
 import numpy as np
 import streamlit_graphs as stg
-
 from DBConnector import getData
 
 
@@ -13,6 +12,7 @@ st.set_page_config(
     page_icon="💸 ",
     layout="wide"
 )
+
 @st.cache_data
 def load_data():
     data1,data2,data3,data4=getData()   
@@ -56,6 +56,7 @@ if len(fede_filter)>0:
     license_filters= data1[data1["nom_fed"].isin(fede_filter)]
 else:
     license_filters=data1
+    
     
 fig_media_lic=stg.graph_comparaison_media_lic(license_filters,event_coverage,data3,sport_events)
 # APPELER LA FONCTION PERMETTANT LA GEN DU GRAPH EN DESSOUS ####

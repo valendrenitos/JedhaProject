@@ -21,3 +21,5 @@ c4.metric("Fédérations", dff["nom_fed"].nunique())
 st.subheader("Aperçu des données")
 st.dataframe(dff.head(50), use_container_width=True)
 
+
+
