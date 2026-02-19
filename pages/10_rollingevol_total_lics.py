@@ -23,11 +23,20 @@ df_long = (
 print(df_long.head(50))
 
 df_long["progression"] = (
-    df_long.groupby(["federation","annee"])["total_lics"]
+    df_long.groupby("federation")["total_lics"]
     .transform(lambda s: s - s.iloc[0])
 )
 df_long.info()
 print(df_long.head(20))
+
+total_evol = (
+    df_long.groupby("federation")["progression"]
+    .max()
+    .sort_values(ascending=False))
+
+print(total_evol.head(10))
+
+
 fig = px.scatter(
     df_long,
     x="total_lics",
