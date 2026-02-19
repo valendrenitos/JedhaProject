@@ -1,17 +1,27 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import app as mn
+import streamlit_app as mn
 from utils import sidebar_filters, apply_filters
 import streamlit_graphs as stg
 from scipy.interpolate import Akima1DInterpolator
 import ML_function as mlf
 import numpy as np
 df = mn.data1
+with st.sidebar:
+    st.page_link("streamlit_app.py", label="Accueil", icon="🏠")
+    st.page_link("pages/1_Vue_ensemble.py", label="Vue d'ensemble du sport en France", icon="💪")
+    st.page_link("pages/2_Analyse_temporelle.py", label="Analyse temporelle du sport en France", icon="📈")
+    st.page_link("pages/3_Analyse_sexe.py", label="Sport & Femmes : Les médias comme levier ?", icon="♀️")
+    st.page_link("pages/4_Annexes.py", label="Annexes ", icon="📋")
 f = sidebar_filters(df)
 dff = apply_filters(df, f)
+st.set_page_config(
+    page_title="Analyse temporelle du sport en France",
+    page_icon="📈",
+    layout="wide"
+)
 
-st.title("📈 Analyse temporelle")
 
 data1=mn.data1
 data3=mn.data3
@@ -48,9 +58,23 @@ st.markdown("""
 
 </div>
 """, unsafe_allow_html=True)
-metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
+st.divider()
+
+st.subheader("Analyse du nombre de licenciés sur les années")
+metrics_list = [
+    ("Licenciés total", "total_lic"),
+    ("Hommes",          "total_h"),
+    ("Femmes",          "total_f"),
+]
+display_name, metric = st.selectbox(
+    "Indicateur",
+    options=metrics_list,
+    format_func=lambda x: x[0]             
+)
 ts = dff.groupby("year")[metric].sum().reset_index()
 ts["variation_%"] = ts[metric].pct_change() * 100
+
+
 
 c1, c2 = st.columns(2)
 with c1:
@@ -59,13 +83,15 @@ with c1:
 with c2:
     mode = st.radio("Affichage", ["Niveau", "Variation (%)"], horizontal=True)
     if mode == "Niveau":
-        fig = px.line(ts, x="year", y=metric, markers=True, title=f"Évolution — {metric}")
+        fig = px.line(ts, x="year", y=metric, markers=True, title=f"Évolution — {display_name}")
     else:
-        fig = px.bar(ts, x="year", y="variation_%", title=f"Variation annuelle (%) — {metric}")
+        fig = px.bar(ts, x="year", y="variation_%", title=f"Variation annuelle (%) — {display_name}")
     st.plotly_chart(fig, use_container_width=True)
 
+st.divider()
 
-sport_events= st.multiselect("Choisir un évenement", 
+st.subheader("Comparaison des pics de médias sportif et du nombre de licenciés")
+sport_events= st.multiselect("Choisir une année", 
                              data2["year"].sort_values().unique(), 
                              placeholder=None,
                              label_visibility="visible", 
@@ -96,17 +122,17 @@ fig_media_lic=stg.graph_comparaison_media_lic(datatreated1,event_coverage,data3,
 
 
 st.plotly_chart(fig_media_lic, use_container_width='stretch')
-
-
+st.divider()
+st.subheader("Comparaison entre les sports féminins et masculins dans les médias")
 ######## CAMEMBERT
-year_filter= st.multiselect("Choisir une année", 
+year_filter2= st.selectbox("Choisir une année", 
                              data2["year"].sort_values().unique(), 
                              placeholder=None,
                              label_visibility="visible", 
                              accept_new_options=False, 
                              width="stretch")
-if len(year_filter)>0:
-    year_filters= data2[data2["year"].isin(year_filter)]
+if len(str(year_filter2))>0:
+    year_filters= data2[data2["year"]==year_filter2]
 else:
     year_filters=data2
 
@@ -114,11 +140,12 @@ else:
 fig_target=stg.pie_chart(year_filters)
 st.plotly_chart(fig_target, use_container_width=True)
 
+st.divider()
+st.subheader("Prévision de l'évolution du nombre de licences")
 
-
-fed = st.selectbox("Select a fed you want to see preds", 
+fed = st.selectbox("Choississez une fédération", 
                    data1["nom_fed"].sort_values().unique())
-year = st.selectbox("Select a year you want to see your pred",
+year = st.selectbox("Choississez une année",
                    np.arange(2024,2041))
 
 
