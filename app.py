@@ -15,10 +15,7 @@ st.set_page_config(
 )
 @st.cache_data
 def load_data():
-    data1,data2,data3,data4=getData()
-    
-    
-    
+    data1,data2,data3,data4=getData()   
     return data1,data2,data3,data4
 
 data1,data2,data3,data4=load_data()

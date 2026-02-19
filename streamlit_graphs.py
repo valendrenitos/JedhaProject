@@ -18,7 +18,7 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
             x=data3read["annee"],
             y=data3read["total"],
             mode='lines+markers',
-            name="This year - Total licenses",
+            name="Licences sportives",
             line=dict(color='royalblue', width=3),
             marker=dict(size=8),
             yaxis="y"          
@@ -30,7 +30,7 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
             x=datapred["annee"],
             y=datapred["total"],
             mode='lines+markers',
-            name="This year - Total licenses",
+            name="Licenses supposées",
             line=dict(color='royalblue', width=3, dash='dash'),
             marker=dict(size=8),
             yaxis="y"          
@@ -43,7 +43,7 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
             x=datatreated1["year"],               
             y=datatreated1["total_license"],  
             mode='lines+markers',
-            name="Last year - Total licenses",
+            name="Licenses sportives uniques",
             line=dict(color='orange', width=2.5, dash='dash'),  
             marker=dict(size=7, symbol='diamond'),
             yaxis="y"                            
@@ -54,7 +54,7 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
         go.Bar(
             x=event_coverage["year"],
             y=event_coverage["avrg_tv_aud"],
-            name="Avg TV audience" + (" (selected events)" if len(sport_events)>0 else " (all events)"),
+            name="Audience TV moyenne" + (" (selected events)" if len(sport_events)>0 else " (all events)"),
             marker_color='rgba(220, 80, 80, 0.65)',  
             yaxis="y2"                               
         )
@@ -62,19 +62,19 @@ def graph_comparaison_media_lic(data1,event_coverage,data3,sport_events):
 
 
     fig.update_layout(
-        title="Total licenses vs Average TV audience per year",
+        title="COmparaison de l'évolution du nombre de licenses par rapport au nombre de téléspectateur moyen",
         xaxis_title="Année",
         
         
         yaxis=dict(
-            title="Total licenses",
+            title="licenses",
             
             tickfont=dict(color="royalblue"),
             side="left"
         ),
 
         yaxis2=dict(
-            title="Average TV audience",
+            title="Téléspectateurs",
                     
             tickfont=dict(color="#d44"),
             overlaying="y",
