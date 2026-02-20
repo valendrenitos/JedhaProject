@@ -51,7 +51,7 @@ st.markdown("""
         <li><b>+35,5%</b> de licenciées entre 2012 et 2023 : : 4,1m à 6,4m</li>
         <li>Le top 3 des fédérations avec la plus grande part de femmes restent des disciplines historiquement connotées : <b>gymnastique (92,6%)</b>, <b>danse (86,9%)</b>, <b>sports de glace (84,6%)</b> </li>
         <li>Sur la période, le nombre de licenciées est en forte augmentation dans des sports considérés comme traditionnellement masculins</li>
-        <li>Depuis 2019 avec <b>90m d'audience</li>, le sport féminin voit ses audiences TV décoller</li>
+        <li>Depuis 2019 avec <b>90m d'audience, le sport féminin voit ses audiences TV décoller</li>
     </ul>
 
 </div>
