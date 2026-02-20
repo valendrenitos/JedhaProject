@@ -9,7 +9,7 @@ import ML_function as mlf
 import numpy as np
 df = mn.data1
 with st.sidebar:
-    st.page_link("streamlit_app.py", label="Accueil", icon="🏠")
+  
     st.page_link("pages/1_Vue_ensemble.py", label="Vue d'ensemble du sport en France", icon="💪")
     st.page_link("pages/2_Analyse_temporelle.py", label="Analyse temporelle du sport en France", icon="📈")
     st.page_link("pages/3_Analyse_sexe.py", label="Sport & Femmes : Les médias comme levier ?", icon="♀️")

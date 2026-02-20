@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 with st.sidebar:
-    st.page_link("streamlit_app.py", label="Accueil", icon="🏠")
+  
     st.page_link("pages/1_Vue_ensemble.py", label="Vue d'ensemble du sport en France", icon="💪")
     st.page_link("pages/2_Analyse_temporelle.py", label="Analyse temporelle du sport en France", icon="📈")
     st.page_link("pages/3_Analyse_sexe.py", label="Sport & Femmes : Les médias comme levier ?", icon="♀️")
@@ -42,8 +42,14 @@ data3.loc[(data3["annee"] >= 2016) & (data3["annee"] <= 2024), "total"] /= 2.6
 st.subheader("Problématique")
 
 st.markdown("""
-    Mettre la problématique ici
+    L'exposition médiatique des évènements sportifs agit-elle comme un levier d'engagement de la population francaise dans le sport ?
 """)
+
+
+st.switch_page("pages/1_Vue_ensemble.py")
+
+
+
 
 # APPELER LA FONCTION PERMETTANT LA GEN DU GRAPH EN DESSOUS ####
 # NOM_VARIABLE_FILTRE= st.multiselect("CHOISIR LE TITRE DU FILTRE", 
