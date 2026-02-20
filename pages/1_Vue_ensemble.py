@@ -138,7 +138,7 @@ with c1:
         color="ratio_licencié_habitant",
         hover_name="region",
         color_continuous_scale="Viridis",
-        range_color=[0, 0.5]
+        range_color=[0, 0.3]
         
     )
 
