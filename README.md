@@ -89,13 +89,19 @@ pip install -r requirements.txt
 
 # Example .env – replace with your real AWS credentials
 DB_HOST=your-redshift-cluster.xxx.eu-west-1.redshift.amazonaws.com
+
 DB_PORT=5439
+
 DB_NAME=dev
+
 DB_USER=your_user
+
 DB_PASSWORD=SuperSecret123!
 
 queryLicenses=SELECT * FROM licenses_table LIMIT 100
+
 queryMedias=SELECT ... FROM medias ...
+
 queryClubs=SELECT ... FROM clubs ...
 
 5. Run the Streamlit app
