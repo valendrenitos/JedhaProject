@@ -28,23 +28,41 @@ This project analyzes sports license data in France (2019–2023), combines it w
 
 ## 📁 Project Structure
 JedhaProject/
+
 ├── Machine_Learning/           # ML experiments / functions
+
 ├── Streamlit_project_jedha/    # Streamlit pages / modules
+
 ├── pages/                      # Additional Streamlit pages
+
 ├── .streamlit/                 # Streamlit config
+
 ├── eda_licences.ipynb          # Main EDA notebook
+
 ├── eda_licences_V2.ipynb       # Improved / alternative EDA
+
 ├── DBConnector.py              # AWS DB connection + query loader from .env
+
 ├── streamlit_app.py            # Main Streamlit entry point
+
 ├── streamlit_graphs.py         # Graph utilities
+
 ├── streamlit_lics.py           # License-specific dashboard logic
+
 ├── ML_function.py              # Machine learning helpers
+
 ├── transfo_2019_2023.py        # Data transformation script (2019–2023)
+
 ├── utils.py                    # Shared utilities
+
 ├── requirements.txt
+
 ├── Dockerfile                  # Optional containerization
+
 ├── pop_by_region.csv           # Population data by French region
+
 ├── regions.geojson             # GeoJSON for French regions
+
 └── .env.example                # Template – create your own .env !
 
 
