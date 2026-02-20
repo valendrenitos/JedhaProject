@@ -1,205 +1,205 @@
 reg,annee,pop
-Auvergne Rhone Alpes,2012,7695264
-Reunion,2012,833944
-Provence Alpes Cote d'Azur,2012,4935576
+Auvergne-Rhône-Alpes,2012,7695264
+Île-de-France,2012,11898502
+Provence-Alpes-Côte d'Azur,2012,4935576
 Pays de la Loire,2012,3632614
 Occitanie,2012,5626858
 Normandie,2012,3322756
 Martinique,2012,388364
-Ile de France,2012,11898502
-Nouvelle Aquitaine,2012,5808594
+La Réunion,2012,833944
+Nouvelle-Aquitaine,2012,5808594
 Guyane,2012,239648
 Guadeloupe,2012,403314
 Grand Est,2012,5548955
 Corse,2012,316257
-Centre Val de Loire,2012,2563586
+Centre-Val de Loire,2012,2563586
 Bretagne,2012,3237097
-Bourgogne Franche Comte,2012,2816814
-Hauts de France,2012,5973098
+Bourgogne-Franche-Comté,2012,2816814
+Hauts-de-France,2012,5973098
 Martinique,2013,385551
-Reunion,2013,835103
-Provence Alpes Cote d'Azur,2013,4953675
+Île-de-France,2013,11959807
+Provence-Alpes-Côte d'Azur,2013,4953675
 Pays de la Loire,2013,3660852
 Occitanie,2013,5683878
-Nouvelle Aquitaine,2013,5844177
+Nouvelle-Aquitaine,2013,5844177
 Normandie,2013,3328364
-Ile de France,2013,11959807
-Centre Val de Loire,2013,2570548
+La Réunion,2013,835103
+Centre-Val de Loire,2013,2570548
 Guyane,2013,244118
 Guadeloupe,2013,402119
 Grand Est,2013,5552388
 Corse,2013,320208
 Bretagne,2013,3258707
-Bourgogne Franche Comte,2013,2819783
-Auvergne Rhone Alpes,2013,7757595
-Hauts de France,2013,5987883
-Ile de France,2014,12027565
-Reunion,2014,842767
-Provence Alpes Cote d'Azur,2014,4983438
+Bourgogne-Franche-Comté,2013,2819783
+Auvergne-Rhône-Alpes,2013,7757595
+Hauts-de-France,2013,5987883
+La Réunion,2014,842767
+Île-de-France,2014,12027565
+Provence-Alpes-Côte d'Azur,2014,4983438
 Pays de la Loire,2014,3690659
 Occitanie,2014,5730753
 Normandie,2014,3335645
 Martinique,2014,383911
-Hauts de France,2014,6006156
-Nouvelle Aquitaine,2014,5879144
+Hauts-de-France,2014,6006156
+Nouvelle-Aquitaine,2014,5879144
 Guadeloupe,2014,400186
 Grand Est,2014,5554645
 Corse,2014,324212
 Guyane,2014,252338
-Centre Val de Loire,2014,2577435
+Centre-Val de Loire,2014,2577435
 Bretagne,2014,3276543
-Bourgogne Franche Comte,2014,2820623
-Auvergne Rhone Alpes,2014,7820966
-Provence Alpes Cote d'Azur,2015,5007977
+Bourgogne-Franche-Comté,2014,2820623
+Auvergne-Rhône-Alpes,2014,7820966
+Provence-Alpes-Côte d'Azur,2015,5007977
 Pays de la Loire,2015,3718512
 Occitanie,2015,5774185
-Nouvelle Aquitaine,2015,5911482
+Nouvelle-Aquitaine,2015,5911482
 Normandie,2015,3339131
 Martinique,2015,380877
-Ile de France,2015,12082144
-Hauts de France,2015,6009976
-Reunion,2015,850727
+La Réunion,2015,850727
+Hauts-de-France,2015,6009976
+Île-de-France,2015,12082144
 Guadeloupe,2015,397990
 Grand Est,2015,5559051
 Corse,2015,327283
-Centre Val de Loire,2015,2578592
+Centre-Val de Loire,2015,2578592
 Bretagne,2015,3293850
-Bourgogne Franche Comte,2015,2820940
-Auvergne Rhone Alpes,2015,6507020
+Bourgogne-Franche-Comté,2015,2820940
+Auvergne-Rhône-Alpes,2015,6507020
 Guyane,2015,259865
-Reunion,2016,852924
-Provence Alpes Cote d'Azur,2016,5021928
+Île-de-France,2016,12117132
+Provence-Alpes-Côte d'Azur,2016,5021928
 Pays de la Loire,2016,3737632
 Occitanie,2016,5808435
-Nouvelle Aquitaine,2016,5935603
+Nouvelle-Aquitaine,2016,5935603
 Normandie,2016,3335929
 Martinique,2016,376480
-Ile de France,2016,12117132
-Hauts de France,2016,6006870
+La Réunion,2016,852924
+Hauts-de-France,2016,6006870
 Guadeloupe,2016,394110
 Grand Est,2016,5555186
 Corse,2016,330455
-Centre Val de Loire,2016,2577866
+Centre-Val de Loire,2016,2577866
 Bretagne,2016,3306529
-Bourgogne Franche Comte,2016,2818338
-Auvergne Rhone Alpes,2016,7916889
+Bourgogne-Franche-Comté,2016,2818338
+Auvergne-Rhône-Alpes,2016,7916889
 Guyane,2016,269352
-Ile de France,2017,12174880
-Provence Alpes Cote d'Azur,2017,5030890
+La Réunion,2017,853659
+Provence-Alpes-Côte d'Azur,2017,5030890
 Pays de la Loire,2017,3757600
 Occitanie,2017,5845102
-Nouvelle Aquitaine,2017,5956978
+Nouvelle-Aquitaine,2017,5956978
 Normandie,2017,3330478
 Martinique,2017,372594
-Hauts de France,2017,6003815
-Reunion,2017,853659
+Hauts-de-France,2017,6003815
+Île-de-France,2017,12174880
 Guadeloupe,2017,390253
 Grand Est,2017,5549586
 Corse,2017,334938
-Centre Val de Loire,2017,2576252
+Centre-Val de Loire,2017,2576252
 Bretagne,2017,3318904
-Bourgogne Franche Comte,2017,2811423
-Auvergne Rhone Alpes,2017,7948287
+Bourgogne-Franche-Comté,2017,2811423
+Auvergne-Rhône-Alpes,2017,7948287
 Guyane,2017,268700
-Provence Alpes Cote d'Azur,2018,5052832
+Provence-Alpes-Côte d'Azur,2018,5052832
 Pays de la Loire,2018,3781423
 Occitanie,2018,5885496
-Nouvelle Aquitaine,2018,5979778
+Nouvelle-Aquitaine,2018,5979778
 Normandie,2018,3327477
 Martinique,2018,368783
-Ile de France,2018,12213447
-Hauts de France,2018,6004108
-Reunion,2018,855961
+La Réunion,2018,855961
+Hauts-de-France,2018,6004108
+Île-de-France,2018,12213447
 Guadeloupe,2018,387629
 Grand Est,2018,5550389
 Corse,2018,338554
-Centre Val de Loire,2018,2572853
+Centre-Val de Loire,2018,2572853
 Bretagne,2018,3335414
-Bourgogne Franche Comte,2018,2807807
-Auvergne Rhone Alpes,2018,7994459
+Bourgogne-Franche-Comté,2018,2807807
+Auvergne-Rhône-Alpes,2018,7994459
 Guyane,2018,276128
-Reunion,2019,861210
-Provence Alpes Cote d'Azur,2019,5081101
+Île-de-France,2019,12262544
+Provence-Alpes-Côte d'Azur,2019,5081101
 Pays de la Loire,2019,3806461
 Occitanie,2019,5933185
-Nouvelle Aquitaine,2019,6010289
+Nouvelle-Aquitaine,2019,6010289
 Normandie,2019,3325032
 Martinique,2019,364508
-Ile de France,2019,12262544
-Hauts de France,2019,6004947
+La Réunion,2019,861210
+Hauts-de-France,2019,6004947
 Guadeloupe,2019,384239
 Grand Est,2019,5556219
 Corse,2019,340440
-Centre Val de Loire,2019,2573180
+Centre-Val de Loire,2019,2573180
 Bretagne,2019,3354854
-Bourgogne Franche Comte,2019,2805580
-Auvergne Rhone Alpes,2019,8042936
+Bourgogne-Franche-Comté,2019,2805580
+Auvergne-Rhône-Alpes,2019,8042936
 Guyane,2019,281678
-Ile de France,2020,12271794
-Provence Alpes Cote d'Azur,2020,5098666
+La Réunion,2020,863083
+Provence-Alpes-Côte d'Azur,2020,5098666
 Pays de la Loire,2020,3832120
 Occitanie,2020,5973969
-Reunion,2020,863083
+Île-de-France,2020,12271794
 Normandie,2020,3325522
 Martinique,2020,361225
-Hauts de France,2020,5997734
-Nouvelle Aquitaine,2020,6033952
+Hauts-de-France,2020,5997734
+Nouvelle-Aquitaine,2020,6033952
 Guadeloupe,2020,383559
 Grand Est,2020,5562651
 Corse,2020,343701
-Centre Val de Loire,2020,2574863
+Centre-Val de Loire,2020,2574863
 Bretagne,2020,3373835
-Bourgogne Franche Comte,2020,2801695
-Auvergne Rhone Alpes,2020,8078652
+Bourgogne-Franche-Comté,2020,2801695
+Auvergne-Rhône-Alpes,2020,8078652
 Guyane,2020,285133
-Reunion,2021,871157
-Provence Alpes Cote d'Azur,2021,5127840
+Île-de-France,2021,12317279
+Provence-Alpes-Côte d'Azur,2021,5127840
 Pays de la Loire,2021,3853999
 Occitanie,2021,6022176
-Nouvelle Aquitaine,2021,6069352
+Nouvelle-Aquitaine,2021,6069352
 Normandie,2021,3327966
 Martinique,2021,360749
-Ile de France,2021,12317279
-Hauts de France,2021,5995292
+La Réunion,2021,871157
+Hauts-de-France,2021,5995292
 Guyane,2021,286618
 Guadeloupe,2021,384315
 Grand Est,2021,5561287
 Corse,2021,347597
-Centre Val de Loire,2021,2573303
+Centre-Val de Loire,2021,2573303
 Bretagne,2021,3394567
-Bourgogne Franche Comte,2021,2800194
-Auvergne Rhone Alpes,2021,8114361
-Provence Alpes Cote d'Azur,2022,5170312
+Bourgogne-Franche-Comté,2021,2800194
+Auvergne-Rhône-Alpes,2021,8114361
+Provence-Alpes-Côte d'Azur,2022,5170312
 Pays de la Loire,2022,3879216
 Occitanie,2022,6080731
-Nouvelle Aquitaine,2022,6113384
-Reunion,2022,881348
+Nouvelle-Aquitaine,2022,6113384
+Île-de-France,2022,12380964
 Normandie,2022,3339074
 Martinique,2022,361019
-Ile de France,2022,12380964
+La Réunion,2022,881348
 Corse,2022,351276
 Guyane,2022,288382
 Guadeloupe,2022,383569
 Grand Est,2022,5560079
-Centre Val de Loire,2022,2581597
+Centre-Val de Loire,2022,2581597
 Bretagne,2022,3422845
-Bourgogne Franche Comte,2022,2803977
-Auvergne Rhone Alpes,2022,8163884
-Hauts de France,2022,5998916
+Bourgogne-Franche-Comté,2022,2803977
+Auvergne-Rhône-Alpes,2022,8163884
+Hauts-de-France,2022,5998916
 Pays de la Loire,2023,3907156
 Occitanie,2023,6124653
-Nouvelle Aquitaine,2023,6150451
+Nouvelle-Aquitaine,2023,6150451
 Normandie,2023,3345842
 Martinique,2023,360630
-Ile de France,2023,12463067
-Hauts de France,2023,5992194
+La Réunion,2023,889679
+Hauts-de-France,2023,5992194
 Corse,2023,355486
 Guadeloupe,2023,384160
 Grand Est,2023,5563378
-Centre Val de Loire,2023,2587031
+Centre-Val de Loire,2023,2587031
 Bretagne,2023,3449370
-Bourgogne Franche Comte,2023,2802670
-Auvergne Rhone Alpes,2023,8205557
-Provence Alpes Cote d'Azur,2023,5218960
+Bourgogne-Franche-Comté,2023,2802670
+Auvergne-Rhône-Alpes,2023,8205557
+Provence-Alpes-Côte d'Azur,2023,5218960
 Guyane,2023,293996
-Reunion,2023,889679
+Île-de-France,2023,12463067
