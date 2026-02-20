@@ -68,7 +68,7 @@ st.markdown("""
     <h4>Insights</h4>
     <h2>La pratique du sport au sein des fédérations, en augmentation depuis 2012</h2>
     <ul>
-        <li><b>48,1%</b> de licenciés entre 2012 et 2023 : : 11,2m à 16,5m</li>
+        <li><b>48,1%</b> de licenciés entre 2012 et 2023 : 11,2m à 16,5m</li>
         <li><b>2021</b> : un drop qui s'explique par la période du COVID. Rattrapé ensuite en 2022</li>
         <li>Au total fédérations, <b>l'Île de France</b> est la région qui présente le plus de licenciés (15,5% du total)</li>
         <li><b>Guyane, Martinique, Guadeloupe, Réunion & Corse</b> : une progression insulaire marquée sur la période</li>
@@ -91,85 +91,6 @@ c4.metric("Fédérations", dff["nom_fed"].nunique())
 st.dataframe(dff.head(50), use_container_width=True)
 
 st.divider()
-
-st.subheader("Analyse par région")
-### CARTE DE FRANCEE
-c1, c2 = st.columns(2)
-
-
-with c1:
-    year_select= st.selectbox("Choisir une année", 
-                             df["year"].sort_values().unique(), 
-                             placeholder=None,
-                             label_visibility="visible", 
-                             accept_new_options=False, 
-                             width="stretch")
-    if len(str(year_select))>0:
-        dftemp=df[df["year"]==year_select]
-    else:
-        dftemp=df[df["year"]==2012]
-    with open("regions.geojson", "r", encoding="utf-8") as regjson:
-        regions_geojson = json.load(regjson)
-
-        
-        dftemp["region"]=dftemp["region"].replace({"dAzur":"d'Azur"}, regex=True)
-        print(dftemp["region"].unique())
-        df_region = dftemp.groupby(["year","region"], as_index=False).agg(total_lic=(
-            "total_lic", "sum"), total_f=(
-            "total_f", "sum"),total_h=(
-            "total_h", "sum"
-            ))
-
-
-    df_region = df_region.merge(data4, left_on="region", right_on="reg", how="left")
-
-    df_region["ratio_licencié_habitant"] = df_region["total_lic"] / df_region["pop"]
-    df_region["ratio_f"] = df_region["total_f"] / df_region["pop"]
-
-
-
-    st.subheader(f"Ratio licenciés / habitant par région - {year_select}")
-
-    fig_map = px.choropleth(
-        df_region,
-        geojson=regions_geojson,
-        locations="region",
-        featureidkey="properties.nom",  
-        color="ratio_licencié_habitant",
-        hover_name="region",
-        color_continuous_scale="Viridis",
-        range_color=[0, 0.3]
-        
-    )
-
-    fig_map.update_geos(fitbounds="locations", visible=False)
-    fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
-
-    st.plotly_chart(fig_map, use_container_width=True)
-
-with c2:
-
-    f_for_rank = dict(f)
-    f_for_rank["region"] = "Toutes"
-
-    dff = apply_filters(df, f_for_rank)
-
-
-
-    metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
-    top_n = st.slider("Top N régions", 5, 30, 18)
-
-    by_region = dff.groupby("region")[metric].sum().sort_values(ascending=False)
-    total_nat = by_region.sum()
-
-    rank = by_region.reset_index().rename(columns={metric: "Total"})
-    rank["Part (%)"] = (rank["Total"] / total_nat * 100).round(2)
-
-    st.dataframe(rank, use_container_width=True)
-
-st.divider()
-
-
 
 #### Separation age 
 st.subheader("Comparaison par tranche d'âge et sexe")
@@ -254,6 +175,87 @@ with col_donut:
 
 
 st.divider()
+
+st.subheader("Analyse par région")
+### CARTE DE FRANCEE
+c1, c2 = st.columns(2)
+
+
+with c1:
+    year_select= st.selectbox("Choisir une année", 
+                             df["year"].sort_values().unique(), 
+                             placeholder=None,
+                             label_visibility="visible", 
+                             accept_new_options=False, 
+                             width="stretch")
+    if len(str(year_select))>0:
+        dftemp=df[df["year"]==year_select]
+    else:
+        dftemp=df[df["year"]==2012]
+    with open("regions.geojson", "r", encoding="utf-8") as regjson:
+        regions_geojson = json.load(regjson)
+
+        
+        dftemp["region"]=dftemp["region"].replace({"dAzur":"d'Azur"}, regex=True)
+        print(dftemp["region"].unique())
+        df_region = dftemp.groupby(["year","region"], as_index=False).agg(total_lic=(
+            "total_lic", "sum"), total_f=(
+            "total_f", "sum"),total_h=(
+            "total_h", "sum"
+            ))
+
+
+    df_region = df_region.merge(data4, left_on="region", right_on="reg", how="left")
+
+    df_region["ratio_licencié_habitant"] = df_region["total_lic"] / df_region["pop"]
+    df_region["ratio_f"] = df_region["total_f"] / df_region["pop"]
+
+
+
+    st.subheader(f"Ratio licenciés / habitant par région - {year_select}")
+
+    fig_map = px.choropleth(
+        df_region,
+        geojson=regions_geojson,
+        locations="region",
+        featureidkey="properties.nom",  
+        color="ratio_licencié_habitant",
+        hover_name="region",
+        color_continuous_scale="Viridis",
+        range_color=[0, 0.3]
+        
+    )
+
+    fig_map.update_geos(fitbounds="locations", visible=False)
+    fig_map.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
+
+    st.plotly_chart(fig_map, use_container_width=True)
+
+with c2:
+
+    f_for_rank = dict(f)
+    f_for_rank["region"] = "Toutes"
+
+    dff = apply_filters(df, f_for_rank)
+
+
+
+    metric = st.selectbox("Indicateur", ["total_lic", "total_h", "total_f"])
+    top_n = st.slider("Top N régions", 5, 30, 18)
+
+    by_region = dff.groupby("region")[metric].sum().sort_values(ascending=False)
+    total_nat = by_region.sum()
+
+    rank = by_region.reset_index().rename(columns={metric: "Total"})
+    rank["Part (%)"] = (rank["Total"] / total_nat * 100).round(2)
+
+    st.dataframe(rank, use_container_width=True)
+
+st.divider()
+
+
+
+
 
 st.subheader("Analyse par fédération")
 # controle
