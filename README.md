@@ -28,23 +28,41 @@ This project analyzes sports license data in France (2019–2023), combines it w
 
 ## 📁 Project Structure
 JedhaProject/
+
 ├── Machine_Learning/           # ML experiments / functions
+
 ├── Streamlit_project_jedha/    # Streamlit pages / modules
+
 ├── pages/                      # Additional Streamlit pages
+
 ├── .streamlit/                 # Streamlit config
+
 ├── eda_licences.ipynb          # Main EDA notebook
+
 ├── eda_licences_V2.ipynb       # Improved / alternative EDA
+
 ├── DBConnector.py              # AWS DB connection + query loader from .env
+
 ├── streamlit_app.py            # Main Streamlit entry point
+
 ├── streamlit_graphs.py         # Graph utilities
+
 ├── streamlit_lics.py           # License-specific dashboard logic
+
 ├── ML_function.py              # Machine learning helpers
+
 ├── transfo_2019_2023.py        # Data transformation script (2019–2023)
+
 ├── utils.py                    # Shared utilities
+
 ├── requirements.txt
+
 ├── Dockerfile                  # Optional containerization
+
 ├── pop_by_region.csv           # Population data by French region
+
 ├── regions.geojson             # GeoJSON for French regions
+
 └── .env.example                # Template – create your own .env !
 
 
@@ -55,7 +73,7 @@ The dashboard mainly pulls cleaned/transformed data + live queries from the **AW
 ## 🚀 Quick Start (Local)
 
 1. Clone the repo
-   bash
+   ```bash
    git clone https://github.com/valendrenitos/JedhaProject.git
    cd JedhaProject
 
@@ -71,13 +89,19 @@ pip install -r requirements.txt
 
 # Example .env – replace with your real AWS credentials
 DB_HOST=your-redshift-cluster.xxx.eu-west-1.redshift.amazonaws.com
+
 DB_PORT=5439
+
 DB_NAME=dev
+
 DB_USER=your_user
+
 DB_PASSWORD=SuperSecret123!
 
 queryLicenses=SELECT * FROM licenses_table LIMIT 100
+
 queryMedias=SELECT ... FROM medias ...
+
 queryClubs=SELECT ... FROM clubs ...
 
 5. Run the Streamlit app
@@ -89,5 +113,7 @@ Add caching (st.cache_data / st.cache_resource) for faster dashboard
 Deploy to Streamlit Community Cloud or AWS EC2
 More advanced ML (clustering federations, prediction of license growth…)
 Tests & better error handling on DB connection
+
+
 
 
